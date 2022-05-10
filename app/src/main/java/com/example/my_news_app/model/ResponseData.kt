@@ -1,4 +1,4 @@
-package com.example.my_news_app.storage
+package com.example.my_news_app.model
 
 data class ResponseData(
     val articles: List<Article>,

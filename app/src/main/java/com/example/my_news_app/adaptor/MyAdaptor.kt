@@ -2,20 +2,16 @@ package com.example.my_news_app.adaptor
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.my_news_app.FullNews
+import com.example.my_news_app.activities.FullNews
 import com.example.my_news_app.R
-import com.example.my_news_app.data
-import com.example.my_news_app.storage.Article
+import com.example.my_news_app.model.Article
 
 class MyAdaptor(private val mList: List<Article>,private val con:Context) : RecyclerView.Adapter<MyAdaptor.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,14 +32,15 @@ class MyAdaptor(private val mList: List<Article>,private val con:Context) : Recy
         // holder.imageView.setImageResource(ItemsViewModel.image)
 
         // sets the text to the textview from our itemHolder class
-        Glide.with(con).load(ItemsViewModel.urlToImage).into(holder.imageView)
-        holder.heading.text = ItemsViewModel.title
-        holder.description.text=ItemsViewModel.description
-        holder.itemView.setOnClickListener(){
-            var intent=Intent(con,FullNews::class.java)
-            intent.putExtra("URL",ItemsViewModel.url.toString())
-            con.startActivity(intent)
-
+        holder.apply {
+            Glide.with(con).load(ItemsViewModel.urlToImage).into(imageView)
+            heading.text = ItemsViewModel.title
+            description.text=ItemsViewModel.description
+            itemView.setOnClickListener(){
+                var intent=Intent(con, FullNews::class.java)
+                intent.putExtra("URL",ItemsViewModel.url.toString())
+                con.startActivity(intent)
+            }
         }
     }
 

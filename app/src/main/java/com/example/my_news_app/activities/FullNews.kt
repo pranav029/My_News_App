@@ -1,13 +1,14 @@
-package com.example.my_news_app
+package com.example.my_news_app.activities
 
 import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ProgressBar
-import android.widget.Toast
-import com.example.my_news_app.storage.Article
+import com.example.my_news_app.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FullNews : AppCompatActivity() {
     private lateinit var  pDialogue:ProgressDialog
@@ -23,8 +24,8 @@ class FullNews : AppCompatActivity() {
         val bundle: Bundle = intent.extras!!
         val url= bundle?.get("URL")
         var web:WebView=findViewById(R.id.webview)
-        web.webViewClient=webClient()
-        web.loadUrl(url.toString())
+            web.webViewClient=webClient()
+            web.loadUrl(url.toString())
     }
     inner class webClient:WebViewClient(){
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
@@ -36,8 +37,13 @@ class FullNews : AppCompatActivity() {
             super.onPageFinished(view, url)
 //           Toast.makeText(this@FullNews,"Success",Toast.LENGTH_LONG).show()
             pDialogue.isIndeterminate=false
-            pDialogue.hide()
+            pDialogue.dismiss()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 
 }
