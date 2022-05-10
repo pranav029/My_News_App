@@ -1,7 +1,6 @@
 package com.example.my_news_app.Api
 
-import com.example.my_news_app.model.ResponseData
-import retrofit2.Call
+import com.example.my_news_app.modal.ResponseData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,4 +1,4 @@
-package com.example.my_news_app.adaptor
+package com.example.my_news_app.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.my_news_app.activities.FullNews
 import com.example.my_news_app.R
-import com.example.my_news_app.model.Article
+import com.example.my_news_app.modal.Article
 
-class MyAdaptor(private val mList: List<Article>,private val con:Context) : RecyclerView.Adapter<MyAdaptor.ViewHolder>() {
+class MyAdapter(private val mList: List<Article>, private val con:Context) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item

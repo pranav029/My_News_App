@@ -3,15 +3,11 @@ package com.example.my_news_app.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.my_news_app.model.Article
-import com.example.my_news_app.model.ResponseData
+import com.example.my_news_app.modal.Article
 import com.example.my_news_app.repositories.NewsRepo
 import com.example.my_news_app.utils.ResponseType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class NewsViewModel(
     private val newsRepo: NewsRepo

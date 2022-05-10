@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.my_news_app.R
 import com.example.my_news_app.activities.MainActivity
-import com.example.my_news_app.adaptor.OptionAdapter
+import com.example.my_news_app.adapter.OptionAdapter
 
 class opt(val con: MainActivity): Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
