@@ -20,22 +20,22 @@ class OptionAdapter(private val mList: List<String>, private val con:MainActivit
         holder.textView.text= setv
         holder.itemView.setOnClickListener(){
             if(holder.textView.text=="Sports"){
-                    con.current("sports")
+                    con.getNews("sports")
             }
             if(holder.textView.text=="Business"){
-                    con.current("business")
+                    con.getNews("business")
             }
             if(holder.textView.text=="Entertainment"){
-                    con.current("entertainment")
+                    con.getNews("entertainment")
             }
             if(holder.textView.text=="Technology"){
-                    con.current("technology")
+                    con.getNews("technology")
             }
             if(holder.textView.text=="Health"){
-                    con.current("health")
+                    con.getNews("health")
             }
             if(holder.textView.text=="News"){
-                    con.current("general")
+                    con.getNews("general")
             }
         }
     }

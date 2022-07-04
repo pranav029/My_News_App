@@ -55,4 +55,5 @@ class MyAdapter(private val mList: List<Article>, private val con:Context) : Rec
         val heading: TextView = itemView.findViewById(R.id.heading)
         val description: TextView=itemView.findViewById(R.id.description)
     }
+
 }

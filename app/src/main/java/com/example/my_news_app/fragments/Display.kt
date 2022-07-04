@@ -16,20 +16,21 @@ import com.example.my_news_app.viewModel.NewsViewModel
 class Display(val list:ArrayList<Article>,val progress:Boolean):Fragment() {
     lateinit var adapter: MyAdapter
     lateinit var viewModel: NewsViewModel
-    init{
 
-    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel = (activity as MainActivity).viewModel
         if(progress==true){
             val view=inflater.inflate(R.layout.progress,container,false)
             return view
         }
         val view=inflater.inflate(R.layout.sports_disp,container,false)
-        initRecyclerView(view)
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel = (activity as MainActivity).viewModel
+        initRecyclerView(view)
+        super.onViewCreated(view, savedInstanceState)
+    }
     fun initRecyclerView(view:View){
         val recyclerView=view.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(activity)

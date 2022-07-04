@@ -1,11 +1,11 @@
-package com.example.my_news_app.Api
+package com.example.my_news_app.api
 
 import com.example.my_news_app.modal.ResponseData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface myApi {
+interface MyApi {
 //    @GET("v2/everything?sortBy=popularity&apiKey=d510d2e3544946238b7647a2f0239d1c")
 //    fun getData(): retrofit2.Call<ResponseData>
 

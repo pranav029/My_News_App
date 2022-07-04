@@ -1,9 +1,9 @@
-package com.example.my_news_app.Api
+package com.example.my_news_app.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class retrofitInstance {
+class RetrofitInstance {
     companion object{
         private val retrofit by lazy {
             Retrofit.Builder()
@@ -11,8 +11,8 @@ class retrofitInstance {
                 .baseUrl("https://newsapi.org/")
                 .build()
         }
-        val get by lazy {
-            retrofit.create(myApi::class.java)
+        val get: MyApi by lazy {
+            retrofit.create(MyApi::class.java)
         }
     }
 }
