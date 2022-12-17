@@ -1,4 +1,4 @@
-package com.example.my_news_app.adapter
+package com.example.my_news_app.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.my_news_app.R
-import com.example.my_news_app.activities.MainActivity
+import com.example.my_news_app.presentation.ClickCallBack
+import com.example.my_news_app.presentation.MainActivity
 
-class OptionAdapter(private val mList: List<String>, private val con:MainActivity) : RecyclerView.Adapter<OptionAdapter.ViewHolder>() {
+class OptionAdapter(private val mList: List<String>, private val mListener:ClickCallBack) : RecyclerView.Adapter<OptionAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.option_disp, parent, false)
@@ -20,22 +21,22 @@ class OptionAdapter(private val mList: List<String>, private val con:MainActivit
         holder.textView.text= setv
         holder.itemView.setOnClickListener(){
             if(holder.textView.text=="Sports"){
-                    con.current("sports")
+                    mListener.onCategoryClick("sports")
             }
             if(holder.textView.text=="Business"){
-                    con.current("business")
+                mListener.onCategoryClick("business")
             }
             if(holder.textView.text=="Entertainment"){
-                    con.current("entertainment")
+                mListener.onCategoryClick("entertainment")
             }
             if(holder.textView.text=="Technology"){
-                    con.current("technology")
+                mListener.onCategoryClick("technology")
             }
             if(holder.textView.text=="Health"){
-                    con.current("health")
+                mListener.onCategoryClick("health")
             }
             if(holder.textView.text=="News"){
-                    con.current("general")
+                mListener.onCategoryClick("general")
             }
         }
     }

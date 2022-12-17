@@ -1,4 +1,4 @@
-package com.example.my_news_app.activities
+package com.example.my_news_app.presentation
 
 import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.example.my_news_app.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class FullNews : AppCompatActivity() {
     private lateinit var  pDialogue:ProgressDialog
