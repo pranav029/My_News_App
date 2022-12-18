@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:layout_margin="10dp"
-    app:cardElevation="6dp">
+    app:cardElevation="6dp"
+    app:cardCornerRadius="16dp">
 
     <LinearLayout
         android:id="@+id/paddiing"

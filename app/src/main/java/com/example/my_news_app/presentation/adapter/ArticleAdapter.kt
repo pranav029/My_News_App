@@ -5,14 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.my_news_app.R
 import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.presentation.ClickCallBack
 
-class MyAdapter(private val mList: List<Article>, private val mListener: ClickCallBack) :
-    RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class ArticleAdapter(
+    private val mList: List<Article>,
+    private val mListener: ClickCallBack,
+    private val showImage: Boolean = true
+) :
+    RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
@@ -32,8 +37,10 @@ class MyAdapter(private val mList: List<Article>, private val mListener: ClickCa
 
         // sets the text to the textview from our itemHolder class
         holder.apply {
-            Glide.with(heading.context).load(article.urlToImage)
+            if (showImage) Glide.with(heading.context).load(article.urlToImage)
                 .placeholder(R.drawable.mrvsmk2pl3l8fwocbfhy).into(imageView)
+                .also { imageView.visibility = View.VISIBLE }
+            else imageView.visibility = View.GONE
             article.title?.let { heading.text = it }
             description.text = article.description
             itemView.setOnClickListener() {

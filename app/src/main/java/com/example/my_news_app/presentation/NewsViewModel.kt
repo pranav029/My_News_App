@@ -17,14 +17,37 @@ class NewsViewModel @Inject constructor(
     private val getSelectedNewsUseCase: GetSelectedNewsUseCase
 ) : ViewModel() {
     val result: MutableLiveData<ResponseType<List<Article>>> = MutableLiveData()
+    var articleUrl: String? = null
+    private val _showProgressDialog: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _showDetailsNewsFragment: MutableLiveData<Boolean> = MutableLiveData(false)
+    val showDetail = _showDetailsNewsFragment
+    val progressDialogVisible = _showProgressDialog
+
 
     init {
         getNews(GENERAL_NEWS)
     }
 
-    fun getNews(category: String) {
+    fun getNews(category: String) =
         getSelectedNewsUseCase(category).onEach {
             result.postValue(it)
         }.launchIn(viewModelScope)
+
+    fun articleClick(articleUrl: String) {
+        this.articleUrl = articleUrl
+        enableShowDetailsFragment()
     }
+
+    fun showProgressDialog() = _showProgressDialog.postValue(true)
+    fun hideProgressDialog() = _showProgressDialog.postValue(false)
+    fun disableShowDetailsFragment() {
+        _showDetailsNewsFragment.value = false
+        articleUrl = null
+    }
+
+    fun enableShowDetailsFragment() {
+        _showDetailsNewsFragment.value = true
+    }
+
+
 }
