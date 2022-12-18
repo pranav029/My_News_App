@@ -8,11 +8,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.my_news_app.R
 import com.example.my_news_app.databinding.FragmentMainBinding
 import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.presentation.ClickCallBack
 import com.example.my_news_app.presentation.NewsViewModel
 import com.example.my_news_app.presentation.adapter.ArticleAdapter
+import com.example.my_news_app.utils.Constants.ENTERTAINMENT_NEWS
+import com.example.my_news_app.utils.Constants.GENERAL_NEWS
+import com.example.my_news_app.utils.Constants.SPORTS_NEWS
 import com.example.my_news_app.utils.ResponseType
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +40,12 @@ class MainNewsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView(view)
+        mBinding?.bottomNav?.setOnItemSelectedListener {
+            if(it.itemId == R.id.item_general)viewModel.getNews(GENERAL_NEWS)
+            if(it.itemId == R.id.item_sports)viewModel.getNews(SPORTS_NEWS)
+            if(it.itemId == R.id.item_entertainment)viewModel.getNews(ENTERTAINMENT_NEWS)
+            true
+        }
         viewModel.result.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is ResponseType.Success -> {
