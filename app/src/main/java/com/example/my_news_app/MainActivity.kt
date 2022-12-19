@@ -1,18 +1,19 @@
 package com.example.my_news_app
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.my_news_app.databinding.ActivityMainBinding
 import com.example.my_news_app.presentation.NewsViewModel
 import com.example.my_news_app.presentation.fragments.DetailNewsFragment.Companion.DetailsNewsFragmentInstance
 import com.example.my_news_app.presentation.fragments.MainNewsFragment
+import com.example.my_news_app.presentation.fragments.SearchNewsFragment
+import com.example.my_news_app.utils.UiHelper.Companion.hideKeyBoard
+import com.example.my_news_app.utils.UiHelper.Companion.launchFragment
+import com.example.my_news_app.utils.UiHelper.Companion.showKeyBoard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,28 +28,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding?.root)
         this.supportActionBar?.hide()
         initLoadDialog()
-        MainNewsFragment().launchFragment()
         mBinding?.let {
             with(it) {
+                MainNewsFragment().launchFragment(mainNavFragment, supportFragmentManager)
                 btnSearch.setOnClickListener {
                     appTitle.visibility = View.GONE
                     btnSearch.visibility = View.GONE
                     searchText.visibility = View.VISIBLE
+                    SearchNewsFragment().launchFragment(
+                        mainNavFragment,
+                        supportFragmentManager,
+                        true
+                    )
                     searchText.requestFocus()
-                    searchText.showKeyboard()
+                    searchText.showKeyBoard(this@MainActivity)
+                    appBar.setExpanded(true)
                 }
                 searchText.setOnClickListener {
                     appTitle.visibility = View.VISIBLE
                     btnSearch.visibility = View.VISIBLE
                     searchText.visibility = View.GONE
-                    searchText.hideKeyboard()
+                    searchText.hideKeyBoard(this@MainActivity)
                 }
             }
         }
         viewModel.showDetail.observe(this) { show ->
             if (show) {
                 viewModel.articleUrl?.let { url ->
-                    url.DetailsNewsFragmentInstance().launchFragment(addToBackStack = true)
+                    mBinding?.let { it ->
+                        with(it) {
+                            mainNavFragment.let {
+                                url.DetailsNewsFragmentInstance()
+                                    .launchFragment(it, supportFragmentManager, true)
+                            }
+                            appBar.setExpanded(true)
+                        }
+                    }
                 }
                 viewModel.disableShowDetailsFragment()
             }
@@ -65,28 +80,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLoadDialog() {
         loadDialog = Dialog(this)
-        loadDialog.setCancelable(true)
+        loadDialog.setCancelable(false)
         loadDialog.setContentView(R.layout.load_dialog)
         Glide.with(this).load(R.drawable.load_spin).into(loadDialog.findViewById(R.id.im_load))
     }
 
-    private fun Fragment.launchFragment(addToBackStack: Boolean = false) {
-        mBinding?.mainNavFragment?.let {
-            val transaction = supportFragmentManager.beginTransaction()
-            if (addToBackStack) transaction.addToBackStack("${this.javaClass.simpleName}")
-            transaction.add(it.id, this@launchFragment)
-            transaction.commit()
-        }
-    }
-    private fun View.showKeyboard(){
-        val imm: InputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    private fun View.hideKeyboard(){
-        val imm: InputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(this.windowToken,0)
-    }
 }

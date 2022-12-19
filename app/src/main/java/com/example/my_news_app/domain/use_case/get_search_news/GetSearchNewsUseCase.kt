@@ -1,9 +1,9 @@
-package com.example.my_news_app.domain.use_case.get_general_news
+package com.example.my_news_app.domain.use_case.get_search_news
 
 import com.example.my_news_app.domain.repository.NewsRepository
 import javax.inject.Inject
 
-class GetGeneralNewsUseCase @Inject constructor(
+class GetSearchNewsUseCase @Inject constructor(
     private val repository: NewsRepository
 ) {
 }
