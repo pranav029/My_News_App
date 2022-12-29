@@ -3,48 +3,96 @@ package com.example.my_news_app.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.my_news_app.R
-import com.example.my_news_app.domain.model.Article
+import com.example.my_news_app.databinding.CardViewBinding
+import com.example.my_news_app.databinding.ItemHeaderBinding
+import com.example.my_news_app.databinding.ItemViewPagerBinding
 import com.example.my_news_app.presentation.ClickCallBack
+import com.example.my_news_app.utils.Constants
+import com.example.my_news_app.utils.Constants.RECOMMENDED_NEWS_HEADER
+import com.example.my_news_app.utils.UiHelper.Companion.addCustomTransformer
+import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
+import com.example.my_news_app.utils.VIEW_TYPE_ARTICLE
+import com.example.my_news_app.utils.VIEW_TYPE_TOP_NEWS
+import com.example.my_news_app.utils.ViewType
 
 class ArticleAdapter(
-    private val mList: List<Article>,
+    private val mList: List<ViewType>,
     private val mListener: ClickCallBack,
     private val showImage: Boolean = true
 ) :
-    RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
+    RecyclerView.Adapter<ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.card_view, parent, false)
-
-        return ViewHolder(view)
+        return when {
+            viewType.equals(VIEW_TYPE_ARTICLE) -> {
+                val mBinding =
+                    CardViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ArticleViewHolder(mBinding)
+            }
+            viewType.equals(VIEW_TYPE_TOP_NEWS) -> {
+                val mBinding =
+                    ItemViewPagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                TopArticlesViewHolder(mBinding)
+            }
+            else -> {
+                val mBinding =
+                    ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                HeaderViewHolder(mBinding)
+            }
+        }
     }
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        when (mList[position]) {
+            is ViewType.Article -> {
+                val article = mList[position].article
 
-        val article = mList[position]
+                // sets the image to the imageview from our itemHolder class
+                // holder.imageView.setImageResource(ItemsViewModel.image)
 
-        // sets the image to the imageview from our itemHolder class
-        // holder.imageView.setImageResource(ItemsViewModel.image)
+                // sets the text to the textview from our itemHolder class
+                with((holder as ArticleViewHolder).mBinding) {
+                    if (showImage) article?.urlToImage?.let {
+                        root.context.loadImageFromUrl(it, imageview)
+                            .also { imageview.visibility = View.VISIBLE }
+                    }
+                    else imageview.visibility = View.GONE
 
-        // sets the text to the textview from our itemHolder class
-        holder.apply {
-            if (showImage) Glide.with(heading.context).load(article.urlToImage)
-                .placeholder(R.drawable.mrvsmk2pl3l8fwocbfhy).into(imageView)
-                .also { imageView.visibility = View.VISIBLE }
-            else imageView.visibility = View.GONE
-            article.title?.let { heading.text = it }
-            description.text = article.description
-            itemView.setOnClickListener() {
-                mListener.onArticleClick(article.url.toString())
+                    article?.title?.let { heading.text = it }
+
+                    root.setOnClickListener() {
+                        mListener.onArticleClick(article?.url.toString())
+                    }
+                }
+            }
+            is ViewType.TopNews -> {
+                val articles = mList[position].list
+                articles?.let {
+                    with((holder as TopArticlesViewHolder).mBinding.llViewpager) {
+                        addCustomTransformer()
+                        adapter = TopNewsPagerAdapter(it, mListener)
+                        offscreenPageLimit = 3
+                        clipToPadding = false
+//                clipChildren = false
+                        getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                    }
+                }
+            }
+            is ViewType.Header -> {
+                val itemHeading = mList[position].heading
+                itemHeading?.let {
+                    with((holder as HeaderViewHolder).mBinding){
+                        heading.text = it
+                        if(it.equals(RECOMMENDED_NEWS_HEADER)){
+                            root.setPadding(0,0,0, 10)
+                        }
+                    }
+                }
             }
         }
     }
@@ -52,10 +100,12 @@ class ArticleAdapter(
     // return the number of the items in the list
     override fun getItemCount(): Int = mList.size
 
+    override fun getItemViewType(position: Int): Int = mList[position].viewType
+
     // Holds the views for adding it to image and text
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val heading: TextView = itemView.findViewById(R.id.heading)
-        val description: TextView = itemView.findViewById(R.id.description)
-    }
+    inner class ArticleViewHolder(val mBinding: CardViewBinding) : ViewHolder(mBinding.root)
+    inner class TopArticlesViewHolder(val mBinding: ItemViewPagerBinding) :
+        ViewHolder(mBinding.root)
+
+    inner class HeaderViewHolder(val mBinding: ItemHeaderBinding) : ViewHolder(mBinding.root)
 }

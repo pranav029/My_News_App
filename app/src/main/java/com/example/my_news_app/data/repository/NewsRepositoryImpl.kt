@@ -9,4 +9,5 @@ class NewsRepositoryImpl @Inject constructor(
     private val api: NewsApi
 ) : NewsRepository {
     override suspend fun getNews(q: String): List<ArticleDto> = api.getArticles(q).articles
+    override suspend fun searchNews(search: String): List<ArticleDto> = api.searchArticles(search).articles
 }

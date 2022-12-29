@@ -10,4 +10,10 @@ interface NewsApi {
 
     @GET("v2/top-headlines?language=en&apiKey=d510d2e3544946238b7647a2f0239d1c")
     suspend fun getArticles(@Query("category") name: String): ResponseArticlesDto
+
+    @GET("v2/everything?language=en&pageSize=5&apiKey=d510d2e3544946238b7647a2f0239d1c")
+    suspend fun getTopArticles(@Query("category") name: String): ResponseArticlesDto
+
+    @GET("v2/top-headlines?language=en&apiKey=d510d2e3544946238b7647a2f0239d1c")
+    suspend fun searchArticles(@Query("q") name: String):ResponseArticlesDto
 }

@@ -16,15 +16,19 @@ import com.example.my_news_app.presentation.NewsViewModel
 import com.example.my_news_app.presentation.adapter.ArticleAdapter
 import com.example.my_news_app.utils.Constants.ENTERTAINMENT_NEWS
 import com.example.my_news_app.utils.Constants.GENERAL_NEWS
+import com.example.my_news_app.utils.Constants.RECOMMENDED_NEWS_HEADER
 import com.example.my_news_app.utils.Constants.SPORTS_NEWS
+import com.example.my_news_app.utils.Constants.TOP_NEWS_HEADER
+import com.example.my_news_app.utils.Constants.TOP_NEWS_QUANTITY
 import com.example.my_news_app.utils.ResponseType
+import com.example.my_news_app.utils.ViewType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainNewsFragment :
-    Fragment(),ClickCallBack {
-    private  var adapter: ArticleAdapter? = null
-    private var mBinding:FragmentMainBinding? = null
+    Fragment(), ClickCallBack {
+    private var adapter: ArticleAdapter? = null
+    private var mBinding: FragmentMainBinding? = null
     private val viewModel by activityViewModels<NewsViewModel>()
     private val articles = arrayListOf<Article>()
 
@@ -33,7 +37,7 @@ class MainNewsFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = FragmentMainBinding.inflate(inflater,container,false)
+        mBinding = FragmentMainBinding.inflate(inflater, container, false)
         return mBinding!!.root
     }
 
@@ -41,16 +45,18 @@ class MainNewsFragment :
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView(view)
         mBinding?.bottomNav?.setOnItemSelectedListener {
-            if(it.itemId == R.id.item_general)viewModel.getNews(GENERAL_NEWS)
-            if(it.itemId == R.id.item_sports)viewModel.getNews(SPORTS_NEWS)
-            if(it.itemId == R.id.item_entertainment)viewModel.getNews(ENTERTAINMENT_NEWS)
+            if (it.itemId == R.id.item_general) viewModel.getNews(GENERAL_NEWS)
+            if (it.itemId == R.id.item_sports) viewModel.getNews(SPORTS_NEWS)
+            if (it.itemId == R.id.item_entertainment) viewModel.getNews(ENTERTAINMENT_NEWS)
             true
         }
         viewModel.result.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is ResponseType.Success -> {
                     response.data?.let {
-                        updateList(it)
+                        articles.clear()
+                        articles.addAll(it)
+                        updateList()
                         viewModel.hideProgressDialog()
                     }
                 }
@@ -67,14 +73,23 @@ class MainNewsFragment :
 
     private fun initRecyclerView(view: View) {
         mBinding?.recyclerview?.layoutManager = LinearLayoutManager(activity)
-        adapter = ArticleAdapter(articles, this)
+        adapter = ArticleAdapter(articles.map { ViewType.Article(it) }, this)
         mBinding?.recyclerview?.adapter = adapter
     }
-    private fun updateList(list: List<Article>){
-        articles.clear()
-        articles.addAll(list)
-        adapter = ArticleAdapter(articles,this)
-        mBinding?.recyclerview?.adapter = adapter
+
+    private fun updateList() {
+        val items: ArrayList<ViewType> = arrayListOf(ViewType.Header(TOP_NEWS_HEADER))
+        items.add(ViewType.TopNews(
+            articles.take(
+                TOP_NEWS_QUANTITY
+            )
+        ))
+        items.add(ViewType.Header(RECOMMENDED_NEWS_HEADER))
+        items.addAll(articles.drop(TOP_NEWS_QUANTITY).map { ViewType.Article(it) })
+        adapter = ArticleAdapter(items, this)
+        mBinding?.run {
+            recyclerview.adapter = adapter
+        }
     }
 
     override fun onDestroyView() {

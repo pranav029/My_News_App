@@ -1,5 +1,6 @@
 package com.example.my_news_app.presentation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +23,10 @@ class NewsViewModel @Inject constructor(
     private val _showDetailsNewsFragment: MutableLiveData<Boolean> = MutableLiveData(false)
     val showDetail = _showDetailsNewsFragment
     val progressDialogVisible = _showProgressDialog
+    private val _closeSerachView = MutableLiveData(false)
+    val closeSearchView:LiveData<Boolean> = _closeSerachView
+    private val _popBack = MutableLiveData(false)
+    val popBack:LiveData<Boolean> = _popBack
 
 
     init {
@@ -49,5 +54,13 @@ class NewsViewModel @Inject constructor(
         _showDetailsNewsFragment.value = true
     }
 
+    fun detach(){
+        _closeSerachView.postValue(true)
+        _closeSerachView.value = false
+    }
+    fun popBack() {
+        _popBack.postValue(true)
+        _popBack.value = false
+    }
 
 }

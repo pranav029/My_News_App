@@ -10,13 +10,18 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#3EEAC7"
+        app:itemTextColor="@color/lightBlue"
+        android:elevation="0dp"
         app:menu="@menu/menu"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/buffer_scroll"
+        android:paddingTop="@dimen/vertical_padding"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/card_view"/>
 </LinearLayout>
