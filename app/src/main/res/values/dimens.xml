@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_news_height">200dp</dimen>
+    <dimen name="horizontal_padding">20dp</dimen>
+    <dimen name="vertical_padding">10dp</dimen>
+    <dimen name="corner_radius_pager">12dp</dimen>
+    <dimen name="card_elevation">3dp</dimen>
+    <dimen name="corner_radius_article">8dp</dimen>
+    <dimen name="card_margin">6dp</dimen>
+    <dimen name="image_size">100dp</dimen>
+    <dimen name="buffer_scroll">100dp</dimen>
+</resources>
