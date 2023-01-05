@@ -15,7 +15,7 @@ class GetSearchNewsUseCase @Inject constructor(
 ) {
     operator fun invoke(search:String): Flow<ResponseType<List<Article>>> = flow {
         try {
-            if(search.isEmpty() && search.length<4)return@flow
+            if(search.canMakeQuery())return@flow
             emit(ResponseType.Loading())
             val response = repository.searchNews(search).map { it.toArticle() }
             emit(ResponseType.Success(response))
@@ -35,4 +35,6 @@ class GetSearchNewsUseCase @Inject constructor(
             )
         }
     }
+
+    private fun String.canMakeQuery() = isNotEmpty() && length>=4
 }

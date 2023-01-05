@@ -10,7 +10,6 @@ import com.example.my_news_app.databinding.CardViewBinding
 import com.example.my_news_app.databinding.ItemHeaderBinding
 import com.example.my_news_app.databinding.ItemViewPagerBinding
 import com.example.my_news_app.presentation.ClickCallBack
-import com.example.my_news_app.utils.Constants
 import com.example.my_news_app.utils.Constants.RECOMMENDED_NEWS_HEADER
 import com.example.my_news_app.utils.UiHelper.Companion.addCustomTransformer
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
@@ -97,10 +96,10 @@ class ArticleAdapter(
             is ViewType.Header -> {
                 val itemHeading = mList[position].heading
                 itemHeading?.let {
-                    with((holder as HeaderViewHolder).mBinding){
+                    with((holder as HeaderViewHolder).mBinding) {
                         heading.text = it
-                        if(it.equals(RECOMMENDED_NEWS_HEADER)){
-                            root.setPadding(0,0,0, 10)
+                        if (it.equals(RECOMMENDED_NEWS_HEADER)) {
+                            root.setPadding(0, 0, 0, 10)
                         }
                     }
                 }

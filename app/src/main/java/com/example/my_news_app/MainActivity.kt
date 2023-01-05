@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.my_news_app.databinding.ActivityMainBinding
-import com.example.my_news_app.presentation.NewsViewModel
-import com.example.my_news_app.presentation.SearchViewModel
+import com.example.my_news_app.presentation.viewModels.NewsViewModel
+import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.presentation.fragments.DetailNewsFragment.Companion.DetailsNewsFragmentInstance
 import com.example.my_news_app.presentation.fragments.MainNewsFragment
 import com.example.my_news_app.presentation.fragments.SearchNewsFragment

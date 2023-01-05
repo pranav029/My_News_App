@@ -15,7 +15,6 @@ import com.example.my_news_app.R
 import com.example.my_news_app.databinding.FragmentMainBinding
 import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.presentation.ClickCallBack
-import com.example.my_news_app.presentation.NewsViewModel
 import com.example.my_news_app.presentation.adapter.ArticleAdapter
 import com.example.my_news_app.presentation.adapter.InfiniteScrollCallback
 import com.example.my_news_app.presentation.viewModels.NewsViewModel
@@ -28,6 +27,7 @@ import com.example.my_news_app.utils.Constants.TOP_NEWS_QUANTITY
 import com.example.my_news_app.utils.ResponseType
 import com.example.my_news_app.utils.ViewType
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainNewsFragment :
@@ -89,14 +89,16 @@ class MainNewsFragment :
 
     private fun updateList() {
         val items: ArrayList<ViewType> = arrayListOf(ViewType.Header(TOP_NEWS_HEADER))
-        items.add(ViewType.TopNews(
-            articles.take(
-                TOP_NEWS_QUANTITY
+        items.add(
+            ViewType.TopNews(
+                articles.take(
+                    TOP_NEWS_QUANTITY
+                )
             )
-        ))
+        )
         items.add(ViewType.Header(RECOMMENDED_NEWS_HEADER))
         items.addAll(articles.drop(TOP_NEWS_QUANTITY).map { ViewType.Article(it) })
-        adapter = ArticleAdapter(items, this)
+        adapter = ArticleAdapter(items, this, mCallback = this)
         mBinding?.run {
             recyclerview.adapter = adapter
         }
@@ -110,6 +112,7 @@ class MainNewsFragment :
         mTimer = null
         handler.removeCallbacksAndMessages(null)
     }
+
 
     override fun onArticleClick(url: String) = viewModel.articleClick(url)
     override fun onStartInfiniteScroll(viewpager: ViewPager2) {

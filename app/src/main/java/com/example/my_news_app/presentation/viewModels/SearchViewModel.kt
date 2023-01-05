@@ -1,4 +1,4 @@
-package com.example.my_news_app.presentation
+package com.example.my_news_app.presentation.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -9,7 +9,7 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.my_news_app.databinding.FragmentFullNewsBinding
-import com.example.my_news_app.presentation.NewsViewModel
+import com.example.my_news_app.presentation.viewModels.NewsViewModel
 import com.example.my_news_app.utils.Constants.ARTICLE_URL
 
 class DetailNewsFragment : Fragment() {
