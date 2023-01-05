@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.example.my_news_app.R
+import androidx.viewpager2.widget.ViewPager2
 import com.example.my_news_app.databinding.CardViewBinding
 import com.example.my_news_app.databinding.ItemHeaderBinding
 import com.example.my_news_app.databinding.ItemViewPagerBinding
@@ -21,9 +21,19 @@ import com.example.my_news_app.utils.ViewType
 class ArticleAdapter(
     private val mList: List<ViewType>,
     private val mListener: ClickCallBack,
-    private val showImage: Boolean = true
+    private val showImage: Boolean = true,
+    private val mCallback: InfiniteScrollCallback? = null
+
 ) :
     RecyclerView.Adapter<ViewHolder>() {
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        if (holder is TopArticlesViewHolder) {
+            mCallback?.onStartInfiniteScroll(holder.mBinding.llViewpager)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
@@ -80,6 +90,7 @@ class ArticleAdapter(
                         clipToPadding = false
 //                clipChildren = false
                         getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                        mCallback?.onStartInfiniteScroll(this)
                     }
                 }
             }
@@ -108,4 +119,9 @@ class ArticleAdapter(
         ViewHolder(mBinding.root)
 
     inner class HeaderViewHolder(val mBinding: ItemHeaderBinding) : ViewHolder(mBinding.root)
+}
+
+interface InfiniteScrollCallback {
+    fun onStartInfiniteScroll(viewpager: ViewPager2)
+    fun onStopInfiniteScroll(viewpager: ViewPager2)
 }

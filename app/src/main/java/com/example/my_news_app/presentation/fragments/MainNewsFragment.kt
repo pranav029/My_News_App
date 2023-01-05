@@ -1,6 +1,8 @@
 package com.example.my_news_app.presentation.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +10,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.my_news_app.R
 import com.example.my_news_app.databinding.FragmentMainBinding
 import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.presentation.ClickCallBack
 import com.example.my_news_app.presentation.NewsViewModel
 import com.example.my_news_app.presentation.adapter.ArticleAdapter
+import com.example.my_news_app.presentation.adapter.InfiniteScrollCallback
+import com.example.my_news_app.presentation.viewModels.NewsViewModel
 import com.example.my_news_app.utils.Constants.ENTERTAINMENT_NEWS
 import com.example.my_news_app.utils.Constants.GENERAL_NEWS
 import com.example.my_news_app.utils.Constants.RECOMMENDED_NEWS_HEADER
@@ -26,17 +31,22 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainNewsFragment :
-    Fragment(), ClickCallBack {
+    Fragment(), ClickCallBack, InfiniteScrollCallback {
     private var adapter: ArticleAdapter? = null
     private var mBinding: FragmentMainBinding? = null
     private val viewModel by activityViewModels<NewsViewModel>()
     private val articles = arrayListOf<Article>()
+    private lateinit var handler: Handler
+    private var mTimer: Timer? = null
+    private var mTimerTask: TimerTask? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        handler = Handler(Looper.myLooper()!!)
+        mTimer = Timer()
         mBinding = FragmentMainBinding.inflate(inflater, container, false)
         return mBinding!!.root
     }
@@ -96,7 +106,28 @@ class MainNewsFragment :
         super.onDestroyView()
         mBinding = null
         adapter = null
+        mTimer?.cancel()
+        mTimer = null
+        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onArticleClick(url: String) = viewModel.articleClick(url)
+    override fun onStartInfiniteScroll(viewpager: ViewPager2) {
+        mTimerTask?.cancel()
+        mTimerTask = MyTimerTask(viewpager)
+        mTimer?.schedule(mTimerTask,0,3000)
+    }
+
+    override fun onStopInfiniteScroll(viewpager: ViewPager2) {
+        mTimerTask?.cancel()
+        mTimer?.cancel()
+        mTimerTask = null
+        handler.removeCallbacksAndMessages(null)
+    }
+
+    inner class MyTimerTask(private val viewPager: ViewPager2) : TimerTask() {
+        override fun run() {
+            handler.post { viewPager.currentItem = (viewPager.currentItem + 1) % 3 }
+        }
+    }
 }
