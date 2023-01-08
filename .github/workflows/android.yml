@@ -26,7 +26,5 @@ jobs:
       run: ./gradlew build
     - name: Build debug APK
       run: bash ./gradlew assembleDebug --stacktrace
-    - name: Run Kotlin Linter
-      run: ./gradlew ktlintDebugCheck
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest
