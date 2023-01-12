@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.my_news_app.databinding.FragmentSearchBinding
 import com.example.my_news_app.presentation.ClickCallBack
-import com.example.my_news_app.presentation.viewModels.NewsViewModel
+import com.example.my_news_app.presentation.viewModels.MainViewModel
 import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.presentation.adapter.ArticleAdapter
 import com.example.my_news_app.utils.ResponseType
@@ -18,10 +18,9 @@ import com.example.my_news_app.utils.ViewType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchNewsFragment:Fragment(),ClickCallBack {
+class SearchNewsFragment:BaseMainActivityFragment(),ClickCallBack {
     private var mBinding:FragmentSearchBinding? = null
     private val viewmodel: SearchViewModel by activityViewModels()
-    private val newsViewModel: NewsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,12 +60,5 @@ class SearchNewsFragment:Fragment(),ClickCallBack {
     }
 
 
-    override fun onDetach() {
-        super.onDetach()
-        newsViewModel.detach()
-
-    }
-
-
-    override fun onArticleClick(url: String) =  newsViewModel.articleClick(url)
+    override fun onArticleClick(url: String) =  mainViewModel.articleClick(url)
 }

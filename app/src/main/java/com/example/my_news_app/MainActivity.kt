@@ -5,27 +5,27 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.my_news_app.databinding.ActivityMainBinding
-import com.example.my_news_app.presentation.viewModels.NewsViewModel
-import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.presentation.fragments.DetailNewsFragment.Companion.DetailsNewsFragmentInstance
 import com.example.my_news_app.presentation.fragments.MainNewsFragment
 import com.example.my_news_app.presentation.fragments.SearchNewsFragment
+import com.example.my_news_app.presentation.uistate.MainActivityState
+import com.example.my_news_app.presentation.viewModels.MainViewModel
+import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.utils.UiHelper.Companion.hideKeyBoard
 import com.example.my_news_app.utils.UiHelper.Companion.launchFragment
 import com.example.my_news_app.utils.UiHelper.Companion.onTextChange
 import com.example.my_news_app.utils.UiHelper.Companion.showKeyBoard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val viewModel: NewsViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     private val searchViewModel: SearchViewModel by viewModels()
     private var mBinding: ActivityMainBinding? = null
     private lateinit var loadDialog: Dialog
@@ -57,30 +57,31 @@ class MainActivity : AppCompatActivity() {
                     }.launchIn(lifecycleScope)
             }
         }
-        viewModel.showDetail.observe(this) { show ->
-            if (show) {
-                viewModel.articleUrl?.let { url ->
+
+        lifecycleScope.launch {
+            mainViewModel.state.distinctUntilChanged { old, new -> old.equals(new) }
+                .collectLatest { uiState ->
                     mBinding?.run {
-                        url.DetailsNewsFragmentInstance()
-                            .launchFragment(mainNavFragment, supportFragmentManager, true)
-                        appBar.setExpanded(true)
-                        closeSearchView()
+                        appBar.isVisible = uiState.isAppbarVisible
+                        if (uiState.isProgressDialogVisible) showLoadDialog()
+                        else hideLoadDialog()
+                        handleClick(uiState)
                     }
                 }
-                viewModel.disableShowDetailsFragment()
+        }
+    }
+
+    private fun handleClick(uiState: MainActivityState) {
+        if (uiState.articleClicked) {
+            mBinding?.run {
+                uiState.articleUrl?.DetailsNewsFragmentInstance()
+                    ?.launchFragment(mainNavFragment, supportFragmentManager, true)
+                appBar.setExpanded(true)
+                closeSearchView()
             }
+            mainViewModel.clickActionFinished()
         }
-        viewModel.progressDialogVisible.observe(this) {
-            if (it) showLoadDialog()
-            else hideLoadDialog()
-        }
-        viewModel.closeSearchView.observe(this) {
-            closeSearchView()
-        }
-        viewModel.popBack.observe(this) {
-            popSearchFragment()
-            closeSearchView()
-        }
+
     }
 
 
@@ -96,8 +97,6 @@ class MainActivity : AppCompatActivity() {
         searchText.hideKeyBoard(this@MainActivity)
         searchText.text.clear()
     }
-
-    private fun popSearchFragment() = supportFragmentManager.popBackStack()
 
     private fun initLoadDialog() {
         loadDialog = Dialog(this)
