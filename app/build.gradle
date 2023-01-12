@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
+def keyStorePropertiesFile =rootProject.file("keystore.properties")
+def keyStorePorperties = new Properties()
+keyStorePorperties.load(new FileInputStream(keyStorePropertiesFile))
 
 android {
     compileSdk 31
@@ -16,6 +19,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "API_KEY", "${keyStorePorperties['apiKey']}"
     }
 
     buildTypes {
@@ -65,10 +70,13 @@ dependencies {
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.okhttp3:okhttp:4.10.0"
 
     //Dagger-Hilt
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+    testImplementation 'com.google.dagger:hilt-android-testing:2.44.2'
+    testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.44.2'
 
     //ViewPager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")

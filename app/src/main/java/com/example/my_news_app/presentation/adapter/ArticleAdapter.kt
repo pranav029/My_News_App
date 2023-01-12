@@ -10,7 +10,7 @@ import com.example.my_news_app.databinding.CardViewBinding
 import com.example.my_news_app.databinding.ItemHeaderBinding
 import com.example.my_news_app.databinding.ItemViewPagerBinding
 import com.example.my_news_app.presentation.ClickCallBack
-import com.example.my_news_app.utils.Constants.RECOMMENDED_NEWS_HEADER
+import com.example.my_news_app.constants.Constants.RECOMMENDED_NEWS_HEADER
 import com.example.my_news_app.utils.UiHelper.Companion.addCustomTransformer
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
 import com.example.my_news_app.utils.VIEW_TYPE_ARTICLE

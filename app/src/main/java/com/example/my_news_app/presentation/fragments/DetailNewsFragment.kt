@@ -9,12 +9,12 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.my_news_app.databinding.FragmentFullNewsBinding
-import com.example.my_news_app.presentation.viewModels.NewsViewModel
-import com.example.my_news_app.utils.Constants.ARTICLE_URL
+import com.example.my_news_app.presentation.viewModels.MainViewModel
+import com.example.my_news_app.constants.Constants.ARTICLE_URL
 
 class DetailNewsFragment : Fragment() {
     private var mBinding: FragmentFullNewsBinding? = null
-    private val viewmodel by activityViewModels<NewsViewModel>()
+    private val viewmodel by activityViewModels<MainViewModel>()
     private var articleUrl: String? = null
 
     override fun onCreateView(
