@@ -15,11 +15,15 @@ import com.example.my_news_app.presentation.fragments.SearchNewsFragment
 import com.example.my_news_app.presentation.uistate.MainActivityState
 import com.example.my_news_app.presentation.viewModels.MainViewModel
 import com.example.my_news_app.presentation.viewModels.SearchViewModel
+import com.example.my_news_app.utils.AnimationUtil.Companion.fadeInAnimation
+import com.example.my_news_app.utils.AnimationUtil.Companion.slideInAnimation
+import com.example.my_news_app.utils.AnimationUtil.Companion.slideOutAnimation
 import com.example.my_news_app.utils.UiHelper.Companion.hideKeyBoard
 import com.example.my_news_app.utils.UiHelper.Companion.launchFragment
 import com.example.my_news_app.utils.UiHelper.Companion.onTextChange
 import com.example.my_news_app.utils.UiHelper.Companion.showKeyBoard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -30,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var mBinding: ActivityMainBinding? = null
     private lateinit var loadDialog: Dialog
 
+    @OptIn(FlowPreview::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -42,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                 appTitle.visibility = View.GONE
                 btnSearch.visibility = View.GONE
                 searchText.visibility = View.VISIBLE
-                searchText.slideInAnimation()
+                searchText.slideInAnimation(this@MainActivity)
                 searchText.requestFocus()
                 searchText.showKeyBoard(this@MainActivity)
                 appBar.setExpanded(true)
@@ -81,19 +86,18 @@ class MainActivity : AppCompatActivity() {
             }
             mainViewModel.clickActionFinished()
         }
-
     }
 
 
     private fun showLoadDialog() = loadDialog.show()
     private fun hideLoadDialog() = loadDialog.dismiss()
     private fun closeSearchView() = mBinding?.run {
-        searchText.slideOutAnimation()
+        searchText.slideOutAnimation(this@MainActivity)
         searchText.visibility = View.GONE
         appTitle.visibility = View.VISIBLE
         btnSearch.visibility = View.VISIBLE
-        appTitle.fadeInAnimation()
-        btnSearch.fadeInAnimation()
+        appTitle.fadeInAnimation(this@MainActivity)
+        btnSearch.fadeInAnimation(this@MainActivity)
         searchText.hideKeyBoard(this@MainActivity)
         searchText.text.clear()
     }
@@ -103,30 +107,5 @@ class MainActivity : AppCompatActivity() {
         loadDialog.setCancelable(false)
         loadDialog.setContentView(R.layout.load_dialog)
         Glide.with(this).load(R.drawable.load_spin).into(loadDialog.findViewById(R.id.im_load))
-    }
-
-    fun View.slideInAnimation() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(
-            this@MainActivity,
-            android.R.anim.slide_in_left
-        )
-        this.startAnimation(animation)
-    }
-
-    fun View.slideOutAnimation() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(
-            this@MainActivity,
-            android.R.anim.slide_out_right
-        )
-        this.startAnimation(animation)
-    }
-
-    fun View.fadeInAnimation() {
-        val animation = android.view.animation.AnimationUtils.loadAnimation(
-            this@MainActivity,
-            android.R.anim.fade_in
-        )
-        animation.setInterpolator(this@MainActivity, android.R.anim.bounce_interpolator)
-        this.startAnimation(animation)
     }
 }
