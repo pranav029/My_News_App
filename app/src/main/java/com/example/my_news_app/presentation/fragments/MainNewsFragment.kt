@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.my_news_app.R
+import com.example.my_news_app.constants.Constants.ARTICLE_URL
 import com.example.my_news_app.constants.Constants.ENTERTAINMENT_NEWS
 import com.example.my_news_app.constants.Constants.GENERAL_NEWS
 import com.example.my_news_app.constants.Constants.RECOMMENDED_NEWS_HEADER
@@ -117,7 +120,10 @@ class MainNewsFragment :
     }
 
 
-    override fun onArticleClick(url: String) = mainViewModel.articleClick(url)
+    override fun onArticleClick(url: String) = findNavController().navigate(
+        R.id.action_HomeFragment_to_DetailNewsFragment,
+        bundleOf(ARTICLE_URL to url)
+    )
 
     override fun onStartInfiniteScroll(viewpager: ViewPager2) {
         mTimerTask?.cancel()

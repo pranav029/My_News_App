@@ -5,21 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.my_news_app.R
+import com.example.my_news_app.constants.Constants.ARTICLE_URL
 import com.example.my_news_app.databinding.FragmentSearchBinding
 import com.example.my_news_app.presentation.ClickCallBack
-import com.example.my_news_app.presentation.viewModels.MainViewModel
-import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.presentation.adapter.ArticleAdapter
+import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.utils.ResponseType
 import com.example.my_news_app.utils.ViewType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchNewsFragment:BaseMainActivityFragment(),ClickCallBack {
-    private var mBinding:FragmentSearchBinding? = null
+class SearchNewsFragment : BaseMainActivityFragment(), ClickCallBack {
+    private var mBinding: FragmentSearchBinding? = null
     private val viewmodel: SearchViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -27,7 +29,7 @@ class SearchNewsFragment:BaseMainActivityFragment(),ClickCallBack {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = FragmentSearchBinding.inflate(inflater,container,false)
+        mBinding = FragmentSearchBinding.inflate(inflater, container, false)
         return mBinding?.root
     }
 
@@ -35,12 +37,12 @@ class SearchNewsFragment:BaseMainActivityFragment(),ClickCallBack {
         super.onViewCreated(view, savedInstanceState)
         mBinding?.run {
             recyclerview.layoutManager = LinearLayoutManager(activity)
-            viewmodel.result.observe(viewLifecycleOwner){ response->
+            viewmodel.result.observe(viewLifecycleOwner) { response ->
                 when (response) {
                     is ResponseType.Success -> {
                         response.data?.let {
                             val articles = it.map { ViewType.Article(it) }
-                            recyclerview.adapter = ArticleAdapter(articles,this@SearchNewsFragment)
+                            recyclerview.adapter = ArticleAdapter(articles, this@SearchNewsFragment)
                         }
                     }
                     is ResponseType.Failure -> {
@@ -60,5 +62,8 @@ class SearchNewsFragment:BaseMainActivityFragment(),ClickCallBack {
     }
 
 
-    override fun onArticleClick(url: String) =  mainViewModel.articleClick(url)
+    override fun onArticleClick(url: String) = findNavController().navigate(
+        R.id.action_SearchNewsFragment_to_DetailNewsFragment,
+        bundleOf(ARTICLE_URL to url)
+    )
 }

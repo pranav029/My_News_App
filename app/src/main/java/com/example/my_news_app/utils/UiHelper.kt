@@ -7,8 +7,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
@@ -31,22 +29,6 @@ class UiHelper {
         fun View.hideKeyBoard(activity: Activity) =
             activity.getInputMethodManager().hideSoftInputFromWindow(this.windowToken, 0)
 
-        fun Fragment.launchFragment(
-            view: View,
-            fragmentManager: FragmentManager,
-            addToBackStack: Boolean = false
-        ) {
-            if (fragmentManager.backStackEntryCount > 1 && fragmentManager.getTopFragment()
-                    .equals("SearchNewsFragment",false)
-            ) fragmentManager.popBackStack()
-            val transaction = fragmentManager.beginTransaction()
-            if (addToBackStack) transaction.addToBackStack("${this.javaClass.simpleName}")
-            transaction.add(view.id, this@launchFragment)
-            transaction.commit()
-        }
-
-        fun FragmentManager.getTopFragment() =
-            this.getBackStackEntryAt(this.backStackEntryCount - 1).name
 
         fun Context.loadImageFromUrl(url: String, imageView: ImageView) =
             Glide.with(this).load(url)

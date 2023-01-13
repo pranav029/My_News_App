@@ -15,17 +15,11 @@ class MainViewModel @Inject constructor() : ViewModel() {
         get() = _state
 
 
-    fun articleClick(articleUrl: String) =
-        _state.update { oldState -> oldState.copy(articleClicked = true, articleUrl = articleUrl) }
-
     fun showProgressDialog() =
         _state.update { oldState -> oldState.copy(isProgressDialogVisible = true) }
 
     fun hideProgressDialog() =
         _state.update { oldState -> oldState.copy(isProgressDialogVisible = false) }
-
-    fun clickActionFinished() =
-        _state.update { oldState -> oldState.copy(articleClicked = false, articleUrl = null) }
 
     fun searchIconClicked() =
         _state.update { oldState -> oldState.copy(searchIconClicked = true) }

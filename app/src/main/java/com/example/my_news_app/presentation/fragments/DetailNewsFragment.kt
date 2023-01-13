@@ -8,9 +8,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.my_news_app.constants.Constants.ARTICLE_URL
 import com.example.my_news_app.databinding.FragmentFullNewsBinding
 import com.example.my_news_app.presentation.viewModels.MainViewModel
-import com.example.my_news_app.constants.Constants.ARTICLE_URL
 
 class DetailNewsFragment : Fragment() {
     private var mBinding: FragmentFullNewsBinding? = null
@@ -57,12 +57,5 @@ class DetailNewsFragment : Fragment() {
             super.onPageFinished(view, url)
             viewmodel.hideProgressDialog()
         }
-    }
-
-    companion object {
-        fun String.DetailsNewsFragmentInstance() = DetailNewsFragment().apply {
-            arguments = Bundle().apply { putString(ARTICLE_URL, this@DetailsNewsFragmentInstance) }
-        }
-
     }
 }

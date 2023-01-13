@@ -7,19 +7,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.my_news_app.databinding.ActivityMainBinding
-import com.example.my_news_app.presentation.fragments.DetailNewsFragment.Companion.DetailsNewsFragmentInstance
-import com.example.my_news_app.presentation.fragments.MainNewsFragment
-import com.example.my_news_app.presentation.fragments.SearchNewsFragment
-import com.example.my_news_app.presentation.uistate.MainActivityState
 import com.example.my_news_app.presentation.viewModels.MainViewModel
 import com.example.my_news_app.presentation.viewModels.SearchViewModel
 import com.example.my_news_app.utils.AnimationUtil.Companion.fadeInAnimation
 import com.example.my_news_app.utils.AnimationUtil.Companion.slideInAnimation
 import com.example.my_news_app.utils.AnimationUtil.Companion.slideOutAnimation
 import com.example.my_news_app.utils.UiHelper.Companion.hideKeyBoard
-import com.example.my_news_app.utils.UiHelper.Companion.launchFragment
 import com.example.my_news_app.utils.UiHelper.Companion.onTextChange
 import com.example.my_news_app.utils.UiHelper.Companion.showKeyBoard
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         this.supportActionBar?.hide()
         initLoadDialog()
         mBinding?.run {
-            MainNewsFragment().launchFragment(mainNavFragment, supportFragmentManager)
             btnSearch.setOnClickListener {
                 appTitle.visibility = View.GONE
                 btnSearch.visibility = View.GONE
@@ -51,11 +46,7 @@ class MainActivity : AppCompatActivity() {
                 searchText.requestFocus()
                 searchText.showKeyBoard(this@MainActivity)
                 appBar.setExpanded(true)
-                SearchNewsFragment().launchFragment(
-                    mainNavFragment,
-                    supportFragmentManager,
-                    true
-                )
+                findNavController(mainNavFragment.id).navigate(R.id.action_HomeFragment_to_SearchNewsFragment)
                 searchText.onTextChange()
                     .filter { it != null }.debounce(300).onEach {
                         searchViewModel.searchNews(it.toString())
@@ -70,21 +61,8 @@ class MainActivity : AppCompatActivity() {
                         appBar.isVisible = uiState.isAppbarVisible
                         if (uiState.isProgressDialogVisible) showLoadDialog()
                         else hideLoadDialog()
-                        handleClick(uiState)
                     }
                 }
-        }
-    }
-
-    private fun handleClick(uiState: MainActivityState) {
-        if (uiState.articleClicked) {
-            mBinding?.run {
-                uiState.articleUrl?.DetailsNewsFragmentInstance()
-                    ?.launchFragment(mainNavFragment, supportFragmentManager, true)
-                appBar.setExpanded(true)
-                closeSearchView()
-            }
-            mainViewModel.clickActionFinished()
         }
     }
 

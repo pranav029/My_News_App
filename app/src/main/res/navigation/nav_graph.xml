@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HomeFragment">
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.example.my_news_app.presentation.fragments.MainNewsFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_HomeFragment_to_DetailNewsFragment"
+            app:destination="@id/DetailNewsFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_SearchNewsFragment"
+            app:destination="@id/SearchNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/DetailNewsFragment"
+        android:name="com.example.my_news_app.presentation.fragments.DetailNewsFragment"
+        android:label="fragment_detailNews"
+        tools:layout="@layout/fragment_full_news" />
+    <fragment
+        android:id="@+id/SearchNewsFragment"
+        android:name="com.example.my_news_app.presentation.fragments.SearchNewsFragment"
+        android:label="fragment_searchNews"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_SearchNewsFragment_to_DetailNewsFragment"
+            app:destination="@id/DetailNewsFragment" />
+    </fragment>
+</navigation>
