@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.my_news_app.R
@@ -22,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchNewsFragment : BaseMainActivityFragment(), ClickCallBack {
     private var mBinding: FragmentSearchBinding? = null
-    private val viewmodel: SearchViewModel by activityViewModels()
+    private val viewmodel: SearchViewModel by viewModels<SearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +43,7 @@ class SearchNewsFragment : BaseMainActivityFragment(), ClickCallBack {
                     is ResponseType.Success -> {
                         response.data?.let {
                             val articles = it.map { ViewType.Article(it) }
-                            recyclerview.adapter = ArticleAdapter(articles, this@SearchNewsFragment)
+                            recyclerview.adapter = ArticleAdapter(articles, this@SearchNewsFragment){_,_->}
                         }
                     }
                     is ResponseType.Failure -> {

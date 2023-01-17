@@ -4,6 +4,7 @@ object Constants {
     const val  BASE_URL = "https://newsapi.org/"
     const val GENERAL_NEWS = "general"
     const val ARTICLE_URL = "URL"
+    const val ARTICLE = "article"
     const val SPORTS_NEWS = "sports"
     const val ENTERTAINMENT_NEWS = "entertainment"
     const val TOP_NEWS_QUANTITY = 3
@@ -13,5 +14,6 @@ object Constants {
     const val CALL_TIMEOUT = 2.toLong()
     const val READ_TIMEOUT = 5.toLong()
     const val CONNECTION_TIMEOUT = 5.toLong()
-
+    const val LIST_IMAGE = "listImage"
+    const val CONTENT_IMAGE = "contentImage"
  }

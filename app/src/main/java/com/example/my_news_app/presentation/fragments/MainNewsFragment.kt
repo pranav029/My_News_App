@@ -6,15 +6,19 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.my_news_app.R
+import com.example.my_news_app.constants.Constants.ARTICLE
 import com.example.my_news_app.constants.Constants.ARTICLE_URL
+import com.example.my_news_app.constants.Constants.CONTENT_IMAGE
 import com.example.my_news_app.constants.Constants.ENTERTAINMENT_NEWS
 import com.example.my_news_app.constants.Constants.GENERAL_NEWS
 import com.example.my_news_app.constants.Constants.RECOMMENDED_NEWS_HEADER
@@ -89,7 +93,8 @@ class MainNewsFragment :
 
     private fun initRecyclerView(view: View) {
         mBinding?.recyclerview?.layoutManager = LinearLayoutManager(activity)
-        adapter = ArticleAdapter(articles.map { ViewType.Article(it) }, this)
+        adapter =
+            ArticleAdapter(articles.map { ViewType.Article(it) }, this, onClick = ::handleClick)
         mBinding?.recyclerview?.adapter = adapter
     }
 
@@ -104,7 +109,7 @@ class MainNewsFragment :
         )
         items.add(ViewType.Header(RECOMMENDED_NEWS_HEADER))
         items.addAll(articles.drop(TOP_NEWS_QUANTITY).map { ViewType.Article(it) })
-        adapter = ArticleAdapter(items, this, mCallback = this)
+        adapter = ArticleAdapter(items, this, mCallback = this, onClick = ::handleClick)
         mBinding?.run {
             recyclerview.adapter = adapter
         }
@@ -121,14 +126,14 @@ class MainNewsFragment :
 
 
     override fun onArticleClick(url: String) = findNavController().navigate(
-        R.id.action_HomeFragment_to_DetailNewsFragment,
+        R.id.action_HomeFragment_to_ContentFragment,
         bundleOf(ARTICLE_URL to url)
     )
 
     override fun onStartInfiniteScroll(viewpager: ViewPager2) {
         mTimerTask?.cancel()
         mTimerTask = MyTimerTask(viewpager)
-        mTimer?.schedule(mTimerTask, 0, 3000)
+        mTimer?.schedule(mTimerTask, 3000, 3000)
     }
 
     override fun onStopInfiniteScroll(viewpager: ViewPager2) {
@@ -136,6 +141,16 @@ class MainNewsFragment :
         mTimer?.cancel()
         mTimerTask = null
         handler.removeCallbacksAndMessages(null)
+    }
+
+    private fun handleClick(article: Article, ivImage: ImageView) {
+        val extras =
+            FragmentNavigator.Extras.Builder().addSharedElement(ivImage, CONTENT_IMAGE).build()
+        findNavController().navigate(R.id.action_HomeFragment_to_ContentFragment, Bundle().apply {
+            putParcelable(
+                ARTICLE, article
+            )
+        }, null, extras)
     }
 
     inner class MyTimerTask(private val viewPager: ViewPager2) : TimerTask() {

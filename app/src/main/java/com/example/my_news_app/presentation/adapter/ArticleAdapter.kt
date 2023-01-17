@@ -3,14 +3,17 @@ package com.example.my_news_app.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewpager2.widget.ViewPager2
+import com.example.my_news_app.constants.Constants.LIST_IMAGE
 import com.example.my_news_app.databinding.CardViewBinding
 import com.example.my_news_app.databinding.ItemHeaderBinding
 import com.example.my_news_app.databinding.ItemViewPagerBinding
 import com.example.my_news_app.presentation.ClickCallBack
 import com.example.my_news_app.constants.Constants.RECOMMENDED_NEWS_HEADER
+import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.utils.UiHelper.Companion.addCustomTransformer
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
 import com.example.my_news_app.utils.VIEW_TYPE_ARTICLE
@@ -21,7 +24,8 @@ class ArticleAdapter(
     private val mList: List<ViewType>,
     private val mListener: ClickCallBack,
     private val showImage: Boolean = true,
-    private val mCallback: InfiniteScrollCallback? = null
+    private val mCallback: InfiniteScrollCallback? = null,
+    private val onClick:(article:Article,ivImage:ImageView)->Unit
 
 ) :
     RecyclerView.Adapter<ViewHolder>() {
@@ -74,8 +78,12 @@ class ArticleAdapter(
 
                     article?.title?.let { heading.text = it }
 
+                    imageview.transitionName = LIST_IMAGE + position
                     root.setOnClickListener() {
-                        mListener.onArticleClick(article?.url.toString())
+//                        mListener.onArticleClick(article?.url.toString())
+                        if (article != null) {
+                            onClick(article,imageview)
+                        }
                     }
                 }
             }

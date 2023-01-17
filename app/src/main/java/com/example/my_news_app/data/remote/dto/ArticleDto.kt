@@ -19,6 +19,7 @@ fun ArticleDto.toArticle():Article{
         description = description,
         title = title,
         url = url,
-        urlToImage = urlToImage
+        urlToImage = urlToImage,
+        content = content
     )
 }

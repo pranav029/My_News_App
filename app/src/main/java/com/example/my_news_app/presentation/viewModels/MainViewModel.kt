@@ -23,4 +23,5 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     fun searchIconClicked() =
         _state.update { oldState -> oldState.copy(searchIconClicked = true) }
+
 }

@@ -86,4 +86,11 @@ class MainActivity : AppCompatActivity() {
         loadDialog.setContentView(R.layout.load_dialog)
         Glide.with(this).load(R.drawable.load_spin).into(loadDialog.findViewById(R.id.im_load))
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding = null
+        Glide.get(this).clearMemory()
+        Glide.get(this).clearDiskCache()
+    }
 }
