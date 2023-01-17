@@ -6,7 +6,7 @@
     <dimen name="corner_radius_pager">12dp</dimen>
     <dimen name="card_elevation">3dp</dimen>
     <dimen name="corner_radius_article">8dp</dimen>
-    <dimen name="card_margin">6dp</dimen>
+    <dimen name="card_margin">10dp</dimen>
     <dimen name="image_size">100dp</dimen>
     <dimen name="buffer_scroll">100dp</dimen>
 </resources>

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.state.distinctUntilChanged { old, new -> old.equals(new) }
                 .collectLatest { uiState ->
                     mBinding?.run {
-                        appBar.isVisible = uiState.isAppbarVisible
+                        appBar.setExpanded(uiState.isAppbarVisible, true)
                         if (uiState.isProgressDialogVisible) showLoadDialog()
                         else hideLoadDialog()
                     }

@@ -20,6 +20,8 @@ fun ArticleDto.toArticle():Article{
         title = title,
         url = url,
         urlToImage = urlToImage,
-        content = content
+        content = content,
+        source = source?.name,
+        time = publishedAt
     )
 }

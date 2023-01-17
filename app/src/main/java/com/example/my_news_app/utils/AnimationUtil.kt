@@ -26,7 +26,7 @@ class AnimationUtil {
                 context,
                 android.R.anim.fade_in
             )
-            animation.setInterpolator(context, android.R.anim.bounce_interpolator)
+            animation.setInterpolator(context, android.R.anim.linear_interpolator)
             this.startAnimation(animation)
         }
     }

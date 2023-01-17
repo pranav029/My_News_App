@@ -24,4 +24,10 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun searchIconClicked() =
         _state.update { oldState -> oldState.copy(searchIconClicked = true) }
 
+    fun hideAppBar() =
+        _state.update { oldState-> oldState.copy(isAppbarVisible = false) }
+
+    fun showAppBar() =
+        _state.update { oldState-> oldState.copy(isAppbarVisible = true) }
+
 }

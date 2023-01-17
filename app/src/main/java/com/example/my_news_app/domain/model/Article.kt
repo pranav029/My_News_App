@@ -11,4 +11,6 @@ data class Article(
     val url: String?,
     val urlToImage: String?,
     val content: String?,
+    val source:String?,
+    val time:String?
 ):Parcelable

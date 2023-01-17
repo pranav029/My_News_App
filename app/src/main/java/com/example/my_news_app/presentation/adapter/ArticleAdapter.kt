@@ -14,6 +14,8 @@ import com.example.my_news_app.databinding.ItemViewPagerBinding
 import com.example.my_news_app.presentation.ClickCallBack
 import com.example.my_news_app.constants.Constants.RECOMMENDED_NEWS_HEADER
 import com.example.my_news_app.domain.model.Article
+import com.example.my_news_app.utils.AnimationUtil.Companion.fadeInAnimation
+import com.example.my_news_app.utils.AnimationUtil.Companion.slideInAnimation
 import com.example.my_news_app.utils.UiHelper.Companion.addCustomTransformer
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
 import com.example.my_news_app.utils.VIEW_TYPE_ARTICLE
@@ -29,6 +31,8 @@ class ArticleAdapter(
 
 ) :
     RecyclerView.Adapter<ViewHolder>() {
+
+    private var lastPosition = -1
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
@@ -85,6 +89,10 @@ class ArticleAdapter(
                             onClick(article,imageview)
                         }
                     }
+                    if(holder.bindingAdapterPosition>lastPosition){
+                        root.slideInAnimation(root.context)
+                        lastPosition = holder.bindingAdapterPosition
+                    }
                 }
             }
             is ViewType.TopNews -> {
@@ -100,6 +108,12 @@ class ArticleAdapter(
                         mCallback?.onStartInfiniteScroll(this)
                     }
                 }
+                if(holder.bindingAdapterPosition>lastPosition){
+                    (holder as TopArticlesViewHolder).mBinding.run {
+                        llViewpager.fadeInAnimation(root.context)
+                    }
+                    lastPosition = holder.bindingAdapterPosition
+                }
             }
             is ViewType.Header -> {
                 val itemHeading = mList[position].heading
@@ -109,11 +123,17 @@ class ArticleAdapter(
                         if (it.equals(RECOMMENDED_NEWS_HEADER)) {
                             root.setPadding(0, 0, 0, 10)
                         }
+                        if(holder.bindingAdapterPosition>lastPosition){
+                            root.slideInAnimation(root.context)
+                            lastPosition = holder.bindingAdapterPosition
+                        }
                     }
                 }
             }
         }
     }
+
+
 
     // return the number of the items in the list
     override fun getItemCount(): Int = mList.size

@@ -61,6 +61,7 @@ class MainNewsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainViewModel.showAppBar()
         postponeEnterTransition()
         mBinding?.root?.viewTreeObserver?.addOnPreDrawListener {
             startPostponedEnterTransition()

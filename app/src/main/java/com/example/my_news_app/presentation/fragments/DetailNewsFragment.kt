@@ -28,6 +28,7 @@ class DetailNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewmodel.showAppBar()
         viewmodel.showProgressDialog()
         arguments?.let {
             articleUrl = it.getString(ARTICLE_URL)
