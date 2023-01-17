@@ -10,8 +10,8 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_HomeFragment_to_DetailNewsFragment"
-            app:destination="@id/DetailNewsFragment" />
+            android:id="@+id/action_HomeFragment_to_ContentFragment"
+            app:destination="@id/ContentFragment" />
         <action
             android:id="@+id/action_HomeFragment_to_SearchNewsFragment"
             app:destination="@id/SearchNewsFragment" />
@@ -28,6 +28,15 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_SearchNewsFragment_to_DetailNewsFragment"
+            app:destination="@id/DetailNewsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ContentFragment"
+        android:name="com.example.my_news_app.presentation.fragments.ContentFragment"
+        android:label="fragment_content"
+        tools:layout="@layout/fragment_content">
+        <action
+            android:id="@+id/action_ContentFragment_to_DetailNewsFragment"
             app:destination="@id/DetailNewsFragment" />
     </fragment>
 </navigation>

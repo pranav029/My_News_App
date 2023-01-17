@@ -61,6 +61,11 @@ class MainNewsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        mBinding?.root?.viewTreeObserver?.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+        }
         initRecyclerView(view)
         mBinding?.bottomNav?.setOnItemSelectedListener {
             if (it.itemId == R.id.item_general) viewModel.getNews(GENERAL_NEWS)
