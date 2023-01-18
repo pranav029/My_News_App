@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.example.my_news_app.databinding.ActivityMainBinding
 import com.example.my_news_app.presentation.viewModels.MainViewModel
@@ -17,6 +21,7 @@ import com.example.my_news_app.utils.AnimationUtil.Companion.slideOutAnimation
 import com.example.my_news_app.utils.UiHelper.Companion.hideKeyBoard
 import com.example.my_news_app.utils.UiHelper.Companion.onTextChange
 import com.example.my_news_app.utils.UiHelper.Companion.showKeyBoard
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
@@ -45,21 +50,23 @@ class MainActivity : AppCompatActivity() {
                 searchText.requestFocus()
                 searchText.showKeyBoard(this@MainActivity)
                 appBar.setExpanded(true)
-                findNavController(mainNavFragment.id).navigate(R.id.action_HomeFragment_to_SearchNewsFragment)
                 searchText.onTextChange()
                     .filter { it != null }.debounce(300).onEach {
                         searchViewModel.searchNews(it.toString())
                     }.launchIn(lifecycleScope)
             }
+            supportFragmentManager.findFragmentById(R.id.main_nav_fragment)
+                ?.let { bnvMain.setupWithNavController(it.findNavController()) }
         }
 
         lifecycleScope.launch {
-            mainViewModel.state.distinctUntilChanged { old, new -> old.equals(new) }
-                .collectLatest { uiState ->
+            mainViewModel.state
+                .collect { uiState ->
                     mBinding?.run {
                         appBar.setExpanded(uiState.isAppbarVisible, true)
                         if (uiState.isProgressDialogVisible) showLoadDialog()
                         else hideLoadDialog()
+                        bnvMain.isVisible = uiState.isBottomNavVisible
                     }
                 }
         }

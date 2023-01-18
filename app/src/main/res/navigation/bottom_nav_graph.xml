@@ -2,39 +2,35 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/HomeFragment">
+    android:id="@+id/bottom_nav_graph"
+    app:startDestination="@id/NewsFragment">
     <fragment
-        android:id="@+id/HomeFragment"
-        android:name="com.example.my_news_app.presentation.fragments.MainNewsFragment"
+        android:id="@+id/NewsFragment"
+        android:name="com.example.my_news_app.presentation.fragments.NewsFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_news" >
         <action
-            android:id="@+id/action_HomeFragment_to_ContentFragment"
+            android:id="@+id/action_NewsFragment_to_ContentFragment"
             app:destination="@id/ContentFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_SearchNewsFragment"
-            app:destination="@id/SearchNewsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/DetailNewsFragment"
-        android:name="com.example.my_news_app.presentation.fragments.DetailNewsFragment"
-        android:label="fragment_detailNews"
-        tools:layout="@layout/fragment_full_news" />
     <fragment
         android:id="@+id/SearchNewsFragment"
         android:name="com.example.my_news_app.presentation.fragments.SearchNewsFragment"
         android:label="fragment_searchNews"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_SearchNewsFragment_to_DetailNewsFragment"
-            app:destination="@id/DetailNewsFragment" />
+            android:id="@+id/action_SearchNewsFragment_to_ContentFragment"
+            app:destination="@id/ContentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/DetailNewsFragment"
+        android:name="com.example.my_news_app.presentation.fragments.DetailNewsFragment"
+        android:label="DetailNewsFragment" />
     <fragment
         android:id="@+id/ContentFragment"
         android:name="com.example.my_news_app.presentation.fragments.ContentFragment"
         android:label="fragment_content"
-        tools:layout="@layout/fragment_content">
+        tools:layout="@layout/fragment_content" >
         <action
             android:id="@+id/action_ContentFragment_to_DetailNewsFragment"
             app:destination="@id/DetailNewsFragment" />

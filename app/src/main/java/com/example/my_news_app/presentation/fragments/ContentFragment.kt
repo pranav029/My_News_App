@@ -1,5 +1,6 @@
 package com.example.my_news_app.presentation.fragments
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -8,21 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.my_news_app.R
 import com.example.my_news_app.constants.Constants.ARTICLE
 import com.example.my_news_app.constants.Constants.ARTICLE_URL
 import com.example.my_news_app.databinding.FragmentContentBinding
 import com.example.my_news_app.domain.model.Article
-import com.example.my_news_app.presentation.viewModels.ContentViewModel
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ContentFragment : BaseMainActivityFragment() {
     private var mBinding: FragmentContentBinding? = null
-    private val viewModel by viewModels<ContentViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,14 +33,13 @@ class ContentFragment : BaseMainActivityFragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel.hideAppBar()
         postponeEnterTransition()
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-                .apply { duration = 1000.toLong() }
+                .apply { duration = 500.toLong() }
         sharedElementReturnTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-                .apply { duration = 1000.toLong() }
+                .apply { duration = 500.toLong() }
         arguments?.let { bundle ->
             mBinding?.run {
                 bundle.getParcelable<Article>(ARTICLE)?.let { article ->
@@ -88,10 +85,21 @@ class ContentFragment : BaseMainActivityFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.hideBottomNav()
+        mainViewModel.hideAppBar()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         mBinding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainViewModel.showBottomNav()
+        mainViewModel.showAppBar()
     }
 
 }

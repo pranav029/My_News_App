@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Taaza Khabar</string>
+    <string name="general_news">General</string>
+    <string name="sports_news">Sports</string>
+    <string name="entertainment_news">Entertainment</string>
+    <string name="technology_news">Technology</string>
 </resources>

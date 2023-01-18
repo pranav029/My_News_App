@@ -12,9 +12,8 @@ import com.example.my_news_app.constants.Constants.ARTICLE_URL
 import com.example.my_news_app.databinding.FragmentFullNewsBinding
 import com.example.my_news_app.presentation.viewModels.MainViewModel
 
-class DetailNewsFragment : Fragment() {
+class DetailNewsFragment : BaseMainActivityFragment() {
     private var mBinding: FragmentFullNewsBinding? = null
-    private val viewmodel by activityViewModels<MainViewModel>()
     private var articleUrl: String? = null
 
     override fun onCreateView(
@@ -22,14 +21,15 @@ class DetailNewsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mainViewModel.hideBottomNav()
+        mainViewModel.showAppBar()
         mBinding = FragmentFullNewsBinding.inflate(inflater, container, false)
         return mBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewmodel.showAppBar()
-        viewmodel.showProgressDialog()
+        mainViewModel.showProgressDialog()
         arguments?.let {
             articleUrl = it.getString(ARTICLE_URL)
         }
@@ -48,6 +48,11 @@ class DetailNewsFragment : Fragment() {
         mBinding = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mainViewModel.showBottomNav()
+    }
+
     inner class WebClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             view!!.loadUrl(url!!)
@@ -56,7 +61,7 @@ class DetailNewsFragment : Fragment() {
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            viewmodel.hideProgressDialog()
+            mainViewModel.hideProgressDialog()
         }
     }
 }

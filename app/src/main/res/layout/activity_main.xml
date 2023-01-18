@@ -74,8 +74,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
+        app:navGraph="@navigation/bottom_nav_graph"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bnv_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemTextColor="@color/lightBlue"
+        app:layout_anchor="@id/main_nav_fragment"
+        app:layout_anchorGravity="bottom"
+        app:menu="@menu/menu"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

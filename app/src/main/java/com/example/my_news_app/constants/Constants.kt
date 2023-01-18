@@ -7,6 +7,7 @@ object Constants {
     const val ARTICLE = "article"
     const val SPORTS_NEWS = "sports"
     const val ENTERTAINMENT_NEWS = "entertainment"
+    const val TECHNOLOGY_NEWS = "technology"
     const val TOP_NEWS_QUANTITY = 3
     const val TOP_NEWS_HEADER = "Top News"
     const val RECOMMENDED_NEWS_HEADER = "Recommended Articles"
@@ -16,4 +17,9 @@ object Constants {
     const val CONNECTION_TIMEOUT = 5.toLong()
     const val LIST_IMAGE = "listImage"
     const val CONTENT_IMAGE = "contentImage"
- }
+    const val LIST_HEADING = "listHeading"
+    const val CONTENT_HEADING = "contentHeading"
+    const val VIEWPAGER_TIME_PERIOD = 3000.toLong()
+    const val VIEWPAGER_TIME_DELAY = 3000.toLong()
+    const val TOPNEWS_OFFSCREEN_LIMIT = 3
+  }

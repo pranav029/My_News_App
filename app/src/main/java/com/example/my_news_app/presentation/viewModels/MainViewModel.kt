@@ -30,4 +30,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
     fun showAppBar() =
         _state.update { oldState-> oldState.copy(isAppbarVisible = true) }
 
+    fun showBottomNav() =
+        _state.update { oldState-> oldState.copy(isBottomNavVisible = true) }
+
+    fun hideBottomNav() =
+        _state.update { oldState-> oldState.copy(isBottomNavVisible = false) }
 }
