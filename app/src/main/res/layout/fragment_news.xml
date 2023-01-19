@@ -15,72 +15,41 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cg_category"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:checkedChip="@id/cv_general"
+            app:checkedChip="@id/cv_sports"
             app:selectionRequired="true"
             app:singleLine="true"
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cv_general"
+                style="@style/chipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                android:checked="false"
-                android:fontFamily="@font/roboto_medium"
-                android:outlineProvider="none"
-                android:text="@string/general_news"
-                android:textColor="@color/lightBlue"
-                app:checkedIconEnabled="false"
-                app:checkedIconTint="@color/lightBlue"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/grey"
-                app:chipStrokeColor="@color/lightBlue"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/general_news" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cv_sports"
+                style="@style/chipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/sports_news"
-                android:textColor="@color/lightBlue"
-                app:checkedIconTint="@color/lightBlue"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/grey"
-                app:chipStrokeColor="@color/lightBlue"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/sports_news"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cv_entertainment"
+                style="@style/chipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/entertainment_news"
-                android:textColor="@color/lightBlue"
-                app:checkedIconTint="@color/lightBlue"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/grey"
-                app:chipStrokeColor="@color/lightBlue"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/entertainment_news"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cv_technology"
+                style="@style/chipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checkable="true"
-                android:fontFamily="@font/roboto_medium"
-                android:text="@string/technology_news"
-                android:textColor="@color/lightBlue"
-                app:checkedIconTint="@color/lightBlue"
-                app:checkedIconVisible="true"
-                app:chipBackgroundColor="@color/grey"
-                app:chipStrokeColor="@color/lightBlue"
-                app:chipStrokeWidth="1dp" />
+                android:text="@string/technology_news" />
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>

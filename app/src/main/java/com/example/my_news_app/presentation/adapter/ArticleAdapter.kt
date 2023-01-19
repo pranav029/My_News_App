@@ -5,9 +5,11 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewpager2.widget.ViewPager2
+import com.example.my_news_app.R
 import com.example.my_news_app.constants.Constants.CONTENT_HEADING
 import com.example.my_news_app.constants.Constants.CONTENT_IMAGE
 import com.example.my_news_app.constants.Constants.LIST_HEADING
@@ -113,7 +115,7 @@ class ArticleAdapter(
                     else imageview.visibility = View.GONE
 
                     article?.title?.let { heading.text = it }
-
+                    article?.time?.let { tvTime.text = it }
                     imageview.transitionName = LIST_IMAGE + position
                     heading.transitionName = LIST_HEADING + position
                     root.setOnClickListener() {
@@ -128,6 +130,17 @@ class ArticleAdapter(
                     if (holder.bindingAdapterPosition > lastPosition) {
                         root.slideInAnimation(root.context)
                         lastPosition = holder.bindingAdapterPosition
+                    }
+
+                    var isSaved = false
+                    ivFavourite.setOnClickListener {
+                        ivFavourite.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                root.context,
+                                if (isSaved) R.drawable.ic_unsaved else R.drawable.ic_saved
+                            )
+                        )
+                        isSaved = isSaved.not()
                     }
                 }
             }

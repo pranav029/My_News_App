@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lightBlue">#03A9F4</color>
     <color name="grey">#E0E6E8</color>
+    <color name="tk_light_grey">#A4B2B6</color>
+    <color name="tk_heading_black">#2E2E2E</color>
+    <color name="tk_body_black">#5C5C5C</color>
+    <color name="tk_grey700">#757575</color>
 </resources>

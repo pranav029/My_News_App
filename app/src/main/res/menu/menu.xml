@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/NewsFragment"
+        android:icon="@drawable/ic_home"
         android:title="Home"/>
     <item
         android:id="@+id/SearchNewsFragment"
+        android:icon="@drawable/ic_search"
         android:title="Search"/>
 </menu>

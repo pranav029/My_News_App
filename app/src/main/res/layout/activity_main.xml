@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/Theme.My_News_App"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -12,60 +13,91 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:elevation="0dp">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:chainUseRtl="true"
-        app:layout_scrollFlags="scroll|enterAlways">
 
-        <EditText
-            android:id="@+id/search_text"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@drawable/round_bg"
-            android:drawableEnd="@drawable/ic_baseline_clear_24"
-            android:ems="10"
-            android:hint="Enter something to search"
-            android:includeFontPadding="true"
-            android:inputType="textPersonName"
-            android:padding="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btn_search"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/app_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/app_title"
-            app:srcCompat="@drawable/ic_search" />
-
-        <TextView
-            android:id="@+id/app_title"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingLeft="0dp"
-            android:text="Taaza Khabar"
-            android:textColor="@color/lightBlue"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:minHeight="?attr/actionBarSize"
+            app:chainUseRtl="true"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/g_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="iv_clear_text,et_search,pb_search"
+                tools:visibility="visible" />
+
+            <EditText
+                android:id="@+id/et_search"
+                style="@style/editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:cursorVisible="true"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:ellipsize="end"
+                android:ems="10"
+                android:hint="Enter something to search"
+                android:includeFontPadding="true"
+                android:inputType="textPersonName"
+                android:letterSpacing="0.1"
+                android:minHeight="48dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_clear_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/et_search"
+                app:layout_constraintEnd_toEndOf="@id/et_search"
+                app:layout_constraintTop_toTopOf="@id/et_search"
+                app:srcCompat="@drawable/ic_baseline_close_24" />
+
+            <ProgressBar
+                android:id="@+id/pb_search"
+                style="@android:style/Widget.Holo.Light.ProgressBar"
+                android:layout_width="24dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="8dp"
+                android:indeterminateTint="@color/lightBlue"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/et_search"
+                app:layout_constraintEnd_toEndOf="@id/et_search"
+                app:layout_constraintTop_toTopOf="@id/et_search" />
+
+
+            <TextView
+                android:id="@+id/app_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:letterSpacing="0.150"
+                android:paddingLeft="0dp"
+                android:text="Taaza Khabar"
+                android:textColor="@color/lightBlue"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
@@ -73,18 +105,19 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:visibility="visible"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/bottom_nav_graph"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:navGraph="@navigation/bottom_nav_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_main"
+        style="@style/bottomNavStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemTextColor="@color/lightBlue"
         app:layout_anchor="@id/main_nav_fragment"
         app:layout_anchorGravity="bottom"
-        app:menu="@menu/menu"/>
+        app:menu="@menu/menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

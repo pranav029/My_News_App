@@ -4,4 +4,5 @@
     <string name="sports_news">Sports</string>
     <string name="entertainment_news">Entertainment</string>
     <string name="technology_news">Technology</string>
+    <string name="no_nresults_navailable">No Results\nfound for the query</string>
 </resources>

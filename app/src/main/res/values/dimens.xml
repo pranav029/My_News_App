@@ -9,4 +9,5 @@
     <dimen name="card_margin">10dp</dimen>
     <dimen name="image_size">100dp</dimen>
     <dimen name="buffer_scroll">100dp</dimen>
+    <dimen name="rounded_corner_radius_primary">4dp</dimen>
 </resources>
