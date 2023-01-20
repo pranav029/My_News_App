@@ -4,6 +4,4 @@ data class MainActivityState(
     val isProgressDialogVisible: Boolean = true,
     val isAppbarVisible: Boolean = true,
     val isBottomNavVisible:Boolean = true,
-    val isSearchGroupVisible:Boolean = false,
-    val isTitleVisible:Boolean = true,
 )

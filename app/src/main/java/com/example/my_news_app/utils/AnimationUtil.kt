@@ -5,7 +5,7 @@ import android.view.View
 
 class AnimationUtil {
     companion object {
-        fun View.slideInAnimation(context: Context) {
+        fun View.slideInAnimation() {
             val animation = android.view.animation.AnimationUtils.loadAnimation(
                 context,
                 android.R.anim.slide_in_left
@@ -13,7 +13,7 @@ class AnimationUtil {
             this.startAnimation(animation)
         }
 
-        fun View.slideOutAnimation(context: Context) {
+        fun View.slideOutAnimation() {
             val animation = android.view.animation.AnimationUtils.loadAnimation(
                 context,
                 android.R.anim.slide_out_right
@@ -21,7 +21,7 @@ class AnimationUtil {
             this.startAnimation(animation)
         }
 
-        fun View.fadeInAnimation(context: Context) {
+        fun View.fadeInAnimation() {
             val animation = android.view.animation.AnimationUtils.loadAnimation(
                 context,
                 android.R.anim.fade_in

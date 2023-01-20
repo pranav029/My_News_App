@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewpager2.widget.ViewPager2
@@ -108,27 +109,30 @@ class ArticleAdapter(
 
                 // sets the text to the textview from our itemHolder class
                 with((holder as ArticleViewHolder).mBinding) {
-                    if (showImage) article?.urlToImage?.let {
-                        root.context.loadImageFromUrl(it, imageview)
-                            .also { imageview.visibility = View.VISIBLE }
-                    }
-                    else imageview.visibility = View.GONE
+                    article?.run {
+                        if (showImage) urlToImage?.let {
+                            root.context.loadImageFromUrl(it, imageview)
+                                .also { imageview.visibility = View.VISIBLE }
+                        }
+                        else imageview.visibility = View.GONE
 
-                    article?.title?.let { heading.text = it }
-                    article?.time?.let { tvTime.text = it }
-                    imageview.transitionName = LIST_IMAGE + position
-                    heading.transitionName = LIST_HEADING + position
-                    root.setOnClickListener() {
-                        if (article != null) {
+                        title?.let { heading.text = it }
+                        time?.let { tvTime.text = it }
+                        ivFavourite.isVisible = isFavVisible
+
+                        root.setOnClickListener() {
                             val sharedElements = listOf(
                                 Pair(imageview, CONTENT_IMAGE),
                                 Pair(heading, CONTENT_HEADING)
                             )
-                            onItemClick(article, sharedElements)
+                            onItemClick(this, sharedElements)
                         }
                     }
+                    imageview.transitionName = LIST_IMAGE + position
+                    heading.transitionName = LIST_HEADING + position
+
                     if (holder.bindingAdapterPosition > lastPosition) {
-                        root.slideInAnimation(root.context)
+                        root.slideInAnimation()
                         lastPosition = holder.bindingAdapterPosition
                     }
 
@@ -158,7 +162,7 @@ class ArticleAdapter(
                 }
                 if (holder.bindingAdapterPosition > lastPosition) {
                     (holder as TopArticlesViewHolder).mBinding.run {
-                        llViewpager.fadeInAnimation(root.context)
+                        llViewpager.fadeInAnimation()
                     }
                     lastPosition = holder.bindingAdapterPosition
                 }
@@ -172,7 +176,7 @@ class ArticleAdapter(
                             root.setPadding(0, 0, 0, 10)
                         }
                         if (holder.bindingAdapterPosition > lastPosition) {
-                            root.slideInAnimation(root.context)
+                            root.slideInAnimation()
                             lastPosition = holder.bindingAdapterPosition
                         }
                     }

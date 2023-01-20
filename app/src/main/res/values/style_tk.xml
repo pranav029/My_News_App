@@ -13,6 +13,7 @@
         <item name="checkedIconEnabled">true</item>
         <item name="checkedIconVisible">true</item>
         <item name="android:checkable">true</item>
+        <item name="android:checked">false</item>
     </style>
 
     <style name="bottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">

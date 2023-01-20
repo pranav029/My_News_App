@@ -6,13 +6,74 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/g_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iv_clear_text,et_search,pb_search"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/et_search"
+        style="@style/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:cursorVisible="true"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:ellipsize="end"
+        android:ems="10"
+        android:hint="Enter something to search"
+        android:includeFontPadding="true"
+        android:inputType="textPersonName"
+        android:letterSpacing="0.1"
+        android:minHeight="48dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_clear_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_search"
+        app:layout_constraintEnd_toEndOf="@id/et_search"
+        app:layout_constraintTop_toTopOf="@id/et_search"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+    <ProgressBar
+        android:id="@+id/pb_search"
+        style="@android:style/Widget.Holo.Light.ProgressBar"
+        android:layout_width="24dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:indeterminateTint="@color/lightBlue"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/et_search"
+        app:layout_constraintEnd_toEndOf="@id/et_search"
+        app:layout_constraintTop_toTopOf="@id/et_search" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingTop="@dimen/vertical_padding"
         android:paddingBottom="@dimen/buffer_scroll"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_search"
         tools:listitem="@layout/card_view">
 
     </androidx.recyclerview.widget.RecyclerView>

@@ -7,6 +7,7 @@ import com.example.my_news_app.utils.ResponseType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import retrofit2.http.Query
 import java.io.IOException
 import javax.inject.Inject
 
@@ -35,5 +36,5 @@ class GetSearchNewsUseCase @Inject constructor(
         }
     }
 
-    private fun String.canMakeQuery() = isNotEmpty() && length>=3
+    fun canMakeQuery(query: String) = query.trim().isNotEmpty() && query.trim().length>=3
 }
