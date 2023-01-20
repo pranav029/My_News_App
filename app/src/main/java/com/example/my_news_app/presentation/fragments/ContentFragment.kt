@@ -8,20 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.my_news_app.R
 import com.example.my_news_app.constants.Constants.ARTICLE
 import com.example.my_news_app.constants.Constants.ARTICLE_URL
 import com.example.my_news_app.databinding.FragmentContentBinding
 import com.example.my_news_app.domain.model.Article
+import com.example.my_news_app.presentation.viewModels.ContentViewModel
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ContentFragment : BaseMainActivityFragment() {
     private var mBinding: FragmentContentBinding? = null
-
+    private val viewmodel:ContentViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,19 +67,9 @@ class ContentFragment : BaseMainActivityFragment() {
                                 })
                         }
                     }
-                    var isSaved = false
+                    ivSave.foreground = ContextCompat.getDrawable(ivSave.context,if(article.isFav)R.drawable.ic_saved else R.drawable.ic_unsaved)
                     ivSave.setOnClickListener {
-                        with(ivSave) {
-                            if (isSaved)
-                                foreground = ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_unsaved,
-                                    null
-                                ).also { isSaved = false }
-                            else foreground =
-                                ResourcesCompat.getDrawable(resources, R.drawable.ic_saved, null)
-                                    .also { isSaved = true }
-                        }
+                       viewmodel.handleSaveClick(article)
                     }
                     tToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 

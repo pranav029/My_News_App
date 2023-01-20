@@ -35,7 +35,8 @@ import java.util.*
 class ArticleAdapter(
     private val mList: List<ViewType>,
     private val showImage: Boolean = true,
-    private val onItemClick: (article: Article, sharedElements: List<Pair<View, String>>) -> Unit
+    private val onItemClick: (article: Article, sharedElements: List<Pair<View, String>>) -> Unit,
+    private val onSaveClick: ((article: Article?) -> Unit)? = null
 
 ) : RecyclerView.Adapter<ViewHolder>() {
 
@@ -119,7 +120,12 @@ class ArticleAdapter(
                         title?.let { heading.text = it }
                         time?.let { tvTime.text = it }
                         ivFavourite.isVisible = isFavVisible
-
+                        ivFavourite.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                root.context,
+                                if (isFav) R.drawable.ic_saved else R.drawable.ic_unsaved
+                            )
+                        )
                         root.setOnClickListener() {
                             val sharedElements = listOf(
                                 Pair(imageview, CONTENT_IMAGE),
@@ -135,17 +141,7 @@ class ArticleAdapter(
                         root.slideInAnimation()
                         lastPosition = holder.bindingAdapterPosition
                     }
-
-                    var isSaved = false
-                    ivFavourite.setOnClickListener {
-                        ivFavourite.setImageDrawable(
-                            ContextCompat.getDrawable(
-                                root.context,
-                                if (isSaved) R.drawable.ic_unsaved else R.drawable.ic_saved
-                            )
-                        )
-                        isSaved = isSaved.not()
-                    }
+                    ivFavourite.setOnClickListener { onSaveClick?.invoke(article) }
                 }
             }
             is ViewType.TopNews -> {

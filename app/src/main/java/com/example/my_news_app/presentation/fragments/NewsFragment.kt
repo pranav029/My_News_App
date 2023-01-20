@@ -99,7 +99,7 @@ class NewsFragment :
         )
         items.add(ViewType.Header(RECOMMENDED_NEWS_HEADER))
         items.addAll(articles.drop(TOP_NEWS_QUANTITY).map { ViewType.Article(it) })
-        adapter = ArticleAdapter(items, onItemClick = ::handleItemClick)
+        adapter = ArticleAdapter(items, onItemClick = ::handleItemClick){article ->  viewModel.handleSaveIconClick(article)  }
         mBinding?.run {
             recyclerview.adapter = adapter
         }

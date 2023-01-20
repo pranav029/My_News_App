@@ -1,6 +1,7 @@
 package com.example.my_news_app.Api
 
 import com.example.my_news_app.data.remote.dto.ResponseArticlesDto
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
 

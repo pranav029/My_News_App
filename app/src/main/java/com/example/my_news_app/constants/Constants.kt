@@ -2,6 +2,7 @@ package com.example.my_news_app.constants
 
 object Constants {
     const val  BASE_URL = "https://newsapi.org/"
+    const val DATABASE_NAME = "NewsAppRoomDatabase"
     const val GENERAL_NEWS = "general"
     const val ARTICLE_URL = "URL"
     const val ARTICLE = "article"

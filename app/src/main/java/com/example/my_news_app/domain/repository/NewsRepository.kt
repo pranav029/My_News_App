@@ -1,8 +1,12 @@
 package com.example.my_news_app.domain.repository
 
-import com.example.my_news_app.data.remote.dto.ArticleDto
+import com.example.my_news_app.domain.model.Article
+import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
-    suspend fun getNews(q:String):List<ArticleDto>
-    suspend fun searchNews(search:String):List<ArticleDto>
+    suspend fun getNews(q: String): Flow<List<Article>>
+    suspend fun searchNews(search: String): Flow<List<Article>>
+    suspend fun getAllArticle(): Flow<List<Article>>
+    suspend fun deleteArticle(article: Article)
+    suspend fun insertArticle(article: Article)
 }

@@ -1,6 +1,7 @@
 package com.example.my_news_app.domain.model
 
 import android.os.Parcelable
+import com.example.my_news_app.data.room.entity.ArticleEntity
 import kotlinx.android.parcel.Parcelize
 import kotlinx.parcelize.IgnoredOnParcel
 
@@ -17,5 +18,17 @@ data class Article(
     @IgnoredOnParcel
     val isFavVisible: Boolean = true,
     @IgnoredOnParcel
-    val isDeleteVisible: Boolean = false
-) : Parcelable
+    val isDeleteVisible: Boolean = false,
+    val isFav:Boolean = false
+) : Parcelable{
+    fun toArticleEntity():ArticleEntity = ArticleEntity(
+        author = author,
+        description = description,
+        title = title,
+        url = url,
+        urlToImage = urlToImage,
+        content = content,
+        source = source,
+        time = time
+    )
+}

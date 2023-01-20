@@ -4,13 +4,14 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id "kotlin-parcelize"
+    id 'com.google.devtools.ksp' version '1.8.0-1.0.8'
 }
 def keyStorePropertiesFile =rootProject.file("keystore.properties")
 def keyStorePorperties = new Properties()
 keyStorePorperties.load(new FileInputStream(keyStorePropertiesFile))
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.my_news_app"
@@ -93,4 +94,17 @@ dependencies {
 
     //Coil
     implementation "io.coil-kt:coil:2.2.2"
+
+
+    //Room
+    def room_version = "2.5.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+    // To use Kotlin Symbol Processing (KSP)
+//    ksp "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 }

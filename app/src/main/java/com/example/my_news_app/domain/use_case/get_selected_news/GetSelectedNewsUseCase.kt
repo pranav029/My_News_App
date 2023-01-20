@@ -1,10 +1,11 @@
 package com.example.my_news_app.domain.use_case.get_selected_news
 
-import com.example.my_news_app.data.remote.dto.toArticle
 import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.domain.repository.NewsRepository
 import com.example.my_news_app.utils.ResponseType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
@@ -14,10 +15,20 @@ class GetSelectedNewsUseCase @Inject constructor(
     private val repository: NewsRepository
 ) {
     operator fun invoke(query: String): Flow<ResponseType<List<Article>>> = flow {
+        emit(ResponseType.Loading())
         try {
-            emit(ResponseType.Loading())
-            val response = repository.getNews(query).map { it.toArticle() }
-            emit(ResponseType.Success(response))
+            repository.getNews(query)
+                .combine(repository.getAllArticle()) { articleFromApi, articleFromDatabase ->
+                    val response = articleFromApi.map { apiArticle ->
+                        if (articleFromDatabase.contains(apiArticle)) apiArticle.copy(
+                            isFavVisible = true,
+                            isFav = true
+                        )
+                        else apiArticle.copy(isFavVisible = true)
+                    }
+                    emit(ResponseType.Success(response))
+                    response
+                }.collect()
         } catch (e: HttpException) {
             emit(
                 ResponseType.Failure(
