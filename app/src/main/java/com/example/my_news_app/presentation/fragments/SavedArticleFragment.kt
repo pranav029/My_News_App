@@ -81,7 +81,7 @@ class SavedArticleFragment : BaseMainActivityFragment() {
         requireActivity().findNavController(R.id.main_nav_fragment)
             .navigate(R.id.action_SavedArticleFragment_to_ContentFragment, Bundle().apply {
                 putParcelable(
-                    Constants.ARTICLE, article
+                    Constants.ARTICLE, article.copy(isFav = true)
                 )
             }, null, extras)
     }
