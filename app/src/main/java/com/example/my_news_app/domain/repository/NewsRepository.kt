@@ -7,6 +7,6 @@ interface NewsRepository {
     suspend fun getNews(q: String): Flow<List<Article>>
     suspend fun searchNews(search: String): Flow<List<Article>>
     suspend fun getAllArticle(): Flow<List<Article>>
-    suspend fun deleteArticle(article: Article)
-    suspend fun insertArticle(article: Article)
+    suspend fun deleteArticle(article: Article): Int
+    suspend fun insertArticle(article: Article): Long
 }

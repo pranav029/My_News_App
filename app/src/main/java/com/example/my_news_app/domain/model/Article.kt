@@ -7,6 +7,7 @@ import kotlinx.parcelize.IgnoredOnParcel
 
 @Parcelize
 data class Article(
+    val id:Long? = null,
     val author: String?,
     val description: String?,
     val title: String?,
@@ -22,6 +23,7 @@ data class Article(
     val isFav:Boolean = false
 ) : Parcelable{
     fun toArticleEntity():ArticleEntity = ArticleEntity(
+        id = id,
         author = author,
         description = description,
         title = title,

@@ -7,5 +7,5 @@ import javax.inject.Inject
 class InsertArticleIUseCase @Inject constructor(
     private val repository: NewsRepository
 ) {
-    suspend operator fun invoke(article: Article) = repository.insertArticle(article)
+    suspend operator fun invoke(article: Article):Long = repository.insertArticle(article)
 }

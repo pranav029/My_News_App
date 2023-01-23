@@ -32,6 +32,7 @@ import kotlinx.coroutines.launch
 class SearchNewsFragment : BaseMainActivityFragment() {
     private var mBinding: FragmentSearchBinding? = null
     private val viewModel: SearchViewModel by viewModels()
+    private var mAdapter: ArticleAdapter? = null
 
 
     override fun onCreateView(
@@ -47,7 +48,11 @@ class SearchNewsFragment : BaseMainActivityFragment() {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.hideBottomNav()
         mainViewModel.hideAppBar()
-        mBinding?.run { recyclerview.layoutManager = LinearLayoutManager(activity) }
+        mBinding?.run {
+            recyclerview.layoutManager = LinearLayoutManager(activity)
+            mAdapter = ArticleAdapter(onItemClick = ::handleItemClick)
+            recyclerview.adapter = mAdapter
+        }
         showSearchView()
         lifecycleScope.subscribeUI()
     }
@@ -74,7 +79,7 @@ class SearchNewsFragment : BaseMainActivityFragment() {
     private fun updateList(articles: List<Article>?) = mBinding?.run {
         val resultList =
             articles?.map { ViewType.Article(it.copy(isFavVisible = true)) } ?: emptyList()
-        recyclerview.adapter = ArticleAdapter(resultList, onItemClick = ::handleItemClick)
+        mAdapter?.submitList(resultList)
     }
 
     override fun onDestroyView() {
@@ -84,6 +89,7 @@ class SearchNewsFragment : BaseMainActivityFragment() {
         mBinding = null
         mainViewModel.showBottomNav()
         mainViewModel.showAppBar()
+        mAdapter = null
     }
 
     private fun handleItemClick(article: Article, sharedElements: List<Pair<View, String>>?) {

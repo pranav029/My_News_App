@@ -1,5 +1,6 @@
 package com.example.my_news_app.presentation.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.my_news_app.constants.Constants.ENTERTAINMENT_NEWS

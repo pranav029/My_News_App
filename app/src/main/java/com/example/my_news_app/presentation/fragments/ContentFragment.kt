@@ -1,6 +1,5 @@
 package com.example.my_news_app.presentation.fragments
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -9,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.my_news_app.R
 import com.example.my_news_app.constants.Constants.ARTICLE
@@ -20,11 +19,13 @@ import com.example.my_news_app.domain.model.Article
 import com.example.my_news_app.presentation.viewModels.ContentViewModel
 import com.example.my_news_app.utils.UiHelper.Companion.loadImageFromUrl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ContentFragment : BaseMainActivityFragment() {
     private var mBinding: FragmentContentBinding? = null
-    private val viewmodel:ContentViewModel by viewModels()
+    private val viewmodel: ContentViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +47,7 @@ class ContentFragment : BaseMainActivityFragment() {
         arguments?.let { bundle ->
             mBinding?.run {
                 bundle.getParcelable<Article>(ARTICLE)?.let { article ->
+                    viewmodel.initArtile(article)
                     ctToolbar.title = article.source
                     article.urlToImage?.let { it1 ->
                         context?.loadImageFromUrl(it1, ivImage) {
@@ -67,13 +69,25 @@ class ContentFragment : BaseMainActivityFragment() {
                                 })
                         }
                     }
-                    ivSave.foreground = ContextCompat.getDrawable(ivSave.context,if(article.isFav)R.drawable.ic_saved else R.drawable.ic_unsaved)
                     ivSave.setOnClickListener {
-                       viewmodel.handleSaveClick(article)
+                        viewmodel.handleSaveClick(article)
                     }
                     tToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
 
                 }
+            }
+        }
+        subscribeUI()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun subscribeUI() = lifecycleScope.launch {
+        viewmodel.isFav.collectLatest { isFav ->
+            mBinding?.run {
+                ivSave.foreground = ContextCompat.getDrawable(
+                    ivSave.context,
+                    if (isFav.second) R.drawable.ic_saved else R.drawable.ic_unsaved
+                )
             }
         }
     }

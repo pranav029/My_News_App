@@ -20,9 +20,10 @@ class GetSelectedNewsUseCase @Inject constructor(
             repository.getNews(query)
                 .combine(repository.getAllArticle()) { articleFromApi, articleFromDatabase ->
                     val response = articleFromApi.map { apiArticle ->
-                        if (articleFromDatabase.contains(apiArticle)) apiArticle.copy(
+                        if (articleFromDatabase.map{it.url}.contains(apiArticle.url)) apiArticle.copy(
                             isFavVisible = true,
-                            isFav = true
+                            isFav = true,
+                            id = articleFromDatabase.get(articleFromDatabase.map{it.url}.indexOf(apiArticle.url)).id
                         )
                         else apiArticle.copy(isFavVisible = true)
                     }

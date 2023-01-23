@@ -23,6 +23,7 @@ import com.example.my_news_app.databinding.CardViewBinding
 import com.example.my_news_app.databinding.ItemHeaderBinding
 import com.example.my_news_app.databinding.ItemViewPagerBinding
 import com.example.my_news_app.domain.model.Article
+import com.example.my_news_app.presentation.adapter.differ.ArticleListDiffer
 import com.example.my_news_app.utils.AnimationUtil.Companion.fadeInAnimation
 import com.example.my_news_app.utils.AnimationUtil.Companion.slideInAnimation
 import com.example.my_news_app.utils.UiHelper.Companion.addCustomTransformer
@@ -33,12 +34,13 @@ import com.example.my_news_app.utils.ViewType
 import java.util.*
 
 class ArticleAdapter(
-    private val mList: List<ViewType>,
     private val showImage: Boolean = true,
+    private val showDelete: Boolean = false,
     private val onItemClick: (article: Article, sharedElements: List<Pair<View, String>>) -> Unit,
-    private val onSaveClick: ((article: Article?) -> Unit)? = null
+    private val onSaveClick: ((article: Article?) -> Unit)? = null,
+    private val onDeleteClick: ((article: Article?) -> Unit)? = null
 
-) : RecyclerView.Adapter<ViewHolder>() {
+) : BaseRecyclerViewAdapter<ViewType, ArticleListDiffer>() {
 
     private lateinit var handler: Handler
     private var mTimer: Timer? = null
@@ -142,6 +144,8 @@ class ArticleAdapter(
                         lastPosition = holder.bindingAdapterPosition
                     }
                     ivFavourite.setOnClickListener { onSaveClick?.invoke(article) }
+                    ivDelete.isVisible = showDelete
+                    ivDelete.setOnClickListener { onDeleteClick?.invoke(article) }
                 }
             }
             is ViewType.TopNews -> {
@@ -182,9 +186,6 @@ class ArticleAdapter(
     }
 
 
-    // return the number of the items in the list
-    override fun getItemCount(): Int = mList.size
-
     override fun getItemViewType(position: Int): Int = mList[position].viewType
 
     /*
@@ -201,5 +202,8 @@ class ArticleAdapter(
         override fun run() {
             handler.post { viewPager.currentItem = (viewPager.currentItem + 1) % 3 }
         }
+
     }
+
+    override fun getDiffer(): ArticleListDiffer = ArticleListDiffer()
 }

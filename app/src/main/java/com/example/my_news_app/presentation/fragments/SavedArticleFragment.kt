@@ -1,7 +1,6 @@
 package com.example.my_news_app.presentation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.my_news_app.R
 import com.example.my_news_app.constants.Constants
 import com.example.my_news_app.databinding.FragmentSavedArticleBinding
@@ -25,34 +23,50 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SavedArticleFragment : BaseMainActivityFragment() {
 
-    private  val viewModel: SavedArticleViewModel by viewModels()
-    private var mBinding:FragmentSavedArticleBinding? = null
+    private val viewModel: SavedArticleViewModel by viewModels()
+    private var mBinding: FragmentSavedArticleBinding? = null
+    private var mAdapter: ArticleAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = FragmentSavedArticleBinding.inflate(inflater,container,false)
-        return mBinding!!.root
+        mBinding = FragmentSavedArticleBinding.inflate(inflater, container, false)
+        return mBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.showAppBar()
-        mBinding?.rvSavedArticle?.layoutManager = LinearLayoutManager(activity)
+        mBinding?.run {
+            rvSavedArticle.layoutManager = LinearLayoutManager(activity)
+            mAdapter = ArticleAdapter(
+                showDelete = true,
+                onItemClick = ::handleItemClick,
+                onDeleteClick = viewModel::deleteArticle
+            )
+            rvSavedArticle.adapter = mAdapter
+        }
+
         lifecycleScope.launch {
-            viewModel.state.collectLatest { list->
-                Log.e("Pranav",list.toString())
-                val articles = list?.map { ViewType.Article(it.copy(isFavVisible = false)) }?: emptyList()
-                mBinding?.rvSavedArticle?.adapter = ArticleAdapter(articles, onItemClick = ::handleItemClick)
+            viewModel.state.collectLatest { list ->
+                val articles =
+                    list?.map { ViewType.Article(it.copy(isFavVisible = false)) } ?: emptyList()
+                mAdapter?.submitList(articles)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.showAppBar()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         mBinding?.rvSavedArticle?.adapter = null
         mBinding = null
+        mAdapter = null
     }
 
     private fun handleItemClick(article: Article, sharedElements: List<Pair<View, String>>?) {

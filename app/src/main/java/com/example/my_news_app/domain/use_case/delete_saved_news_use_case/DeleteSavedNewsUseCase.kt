@@ -8,5 +8,5 @@ import javax.inject.Inject
 class DeleteSavedNewsUseCase @Inject constructor(
     private val repository: NewsRepository
 ) {
-    suspend operator fun invoke(article: Article) = repository.deleteArticle(article)
+    suspend operator fun invoke(article: Article):Int = repository.deleteArticle(article)
 }

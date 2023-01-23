@@ -1,6 +1,5 @@
 package com.example.my_news_app.data.repository
 
-import android.util.Log
 import com.example.my_news_app.Api.NewsApi
 import com.example.my_news_app.data.remote.dto.toArticle
 import com.example.my_news_app.data.room.ArticleDatabase
@@ -28,9 +27,9 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun getAllArticle(): Flow<List<Article>> =
         db.articleDao().getAllArticles().map { it.map { it.toArticle() } }
 
-    override suspend fun deleteArticle(article: Article) =
+    override suspend fun deleteArticle(article: Article): Int =
         db.articleDao().deleteArticle(article.toArticleEntity())
 
-    override suspend fun insertArticle(article: Article) =
+    override suspend fun insertArticle(article: Article): Long =
         db.articleDao().insertArticle(article.toArticleEntity())
 }

@@ -23,6 +23,8 @@ import com.example.my_news_app.utils.ResponseType
 import com.example.my_news_app.utils.ViewType
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -84,7 +86,7 @@ class NewsFragment :
     private fun initRecyclerView(view: View) {
         mBinding?.recyclerview?.layoutManager = LinearLayoutManager(activity)
         adapter =
-            ArticleAdapter(articles.map { ViewType.Article(it) }, onItemClick = ::handleItemClick)
+            ArticleAdapter(onItemClick = ::handleItemClick, onSaveClick = viewModel::handleSaveIconClick)
         mBinding?.recyclerview?.adapter = adapter
     }
 
@@ -99,7 +101,7 @@ class NewsFragment :
         )
         items.add(ViewType.Header(RECOMMENDED_NEWS_HEADER))
         items.addAll(articles.drop(TOP_NEWS_QUANTITY).map { ViewType.Article(it) })
-        adapter = ArticleAdapter(items, onItemClick = ::handleItemClick){article ->  viewModel.handleSaveIconClick(article)  }
+        adapter?.submitList(items)
         mBinding?.run {
             recyclerview.adapter = adapter
         }

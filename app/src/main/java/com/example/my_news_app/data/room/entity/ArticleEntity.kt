@@ -6,7 +6,7 @@ import com.example.my_news_app.domain.model.Article
 
 @Entity
 data class ArticleEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+    @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val author: String?,
     val description: String?,
     val title: String?,
@@ -17,6 +17,7 @@ data class ArticleEntity(
     val time: String?
 ) {
     fun toArticle(): Article = Article(
+        id = id,
         author = author,
         description = description,
         title = title,
