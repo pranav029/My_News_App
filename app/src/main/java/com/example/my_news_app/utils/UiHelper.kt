@@ -42,7 +42,6 @@ class UiHelper {
             onLoadSuccess: (() -> Unit)? = null
         ) =
             Glide.with(this)
-                .asDrawable()
                 .load(url)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(

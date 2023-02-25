@@ -20,6 +20,7 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_SearchNewsFragment_to_ContentFragment"
+            app:popUpTo="@id/SearchNewsFragment"
             app:destination="@id/ContentFragment" />
     </fragment>
     <fragment

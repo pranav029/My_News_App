@@ -22,5 +22,5 @@ object Constants {
     const val CONTENT_HEADING = "contentHeading"
     const val VIEWPAGER_TIME_PERIOD = 3000.toLong()
     const val VIEWPAGER_TIME_DELAY = 3000.toLong()
-    const val TOPNEWS_OFFSCREEN_LIMIT = 3
+    const val TOP_NEWS_OFFSCREEN_LIMIT = 3
   }

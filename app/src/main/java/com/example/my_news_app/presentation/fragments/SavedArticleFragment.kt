@@ -38,6 +38,11 @@ class SavedArticleFragment : BaseMainActivityFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainViewModel.showAppBar()
+        postponeEnterTransition()
+        mBinding?.root?.viewTreeObserver?.addOnPreDrawListener {
+            startPostponedEnterTransition()
+            true
+        }
         mBinding?.run {
             rvSavedArticle.layoutManager = LinearLayoutManager(activity)
             mAdapter = ArticleAdapter(
